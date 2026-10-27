@@ -15,10 +15,30 @@ export const site = {
   tagline: "Better Vision Brighter Life",
   description:
     "RKM Eye Care (Radhakrishnan Memorial Eye Care) offers compassionate, ethical and patient-focused eye care, with an optical care showroom, coming soon to Parappanangadi.",
+  /** Slightly longer, keyword-aware description for the home page and search results. */
+  seoDescription:
+    "Ethical, patient-focused eye clinic and optical showroom coming soon to Parappanangadi, Kerala. Cataract, glaucoma, retina, cornea and paediatric eye care.",
 
   url:
     process.env.NEXT_PUBLIC_SITE_URL ??
-    (vercelHost ? `https://${vercelHost}` : "http://localhost:3000"),
+    (vercelHost
+      ? `https://${vercelHost}`
+      : process.env.NODE_ENV === "production"
+        ? "https://rkmeyecare.com"
+        : "http://localhost:3000"),
+
+  /** Search-result title for the home page (keeps the town and service in the first 60 characters). */
+  seoTitle: "RKM Eye Care | Eye Clinic & Optical Care in Parappanangadi",
+  region: "Kerala",
+  district: "Malappuram",
+  keywords: [
+    "eye clinic Parappanangadi",
+    "ophthalmologist Parappanangadi",
+    "eye hospital Malappuram",
+    "optical shop Parappanangadi",
+    "cataract glaucoma retina Kerala",
+    "RKM Eye Care",
+  ],
 
   /** Confirmed from the supplied "Coming Soon" poster. */
   town: "Parappanangadi",

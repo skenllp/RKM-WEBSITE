@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbJsonLd } from "@/lib/structured-data";
 import { buildMetadata } from "@/lib/seo";
 import { site } from "@/content/site";
 import { getImage } from "@/content/gallery";
@@ -9,8 +11,8 @@ import { DraftNote } from "@/components/DraftNote";
 import { EyeIcon } from "@/components/Icons";
 
 export const metadata = buildMetadata({
-  title: "Optical Care",
-  description: `RKM Optical Care, the eyewear showroom of ${site.name}. Architectural visualisations of the optical space.`,
+  title: "Optical Care & Eyewear in Parappanangadi",
+  description: `RKM Optical Care, the eyewear showroom beside ${site.name} in Parappanangadi, Kerala. Get your eye examination and eyewear in one place. Opening soon.`,
   path: "/optical-care",
 });
 
@@ -22,6 +24,7 @@ export default function OpticalCarePage() {
 
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Optical Care", path: "/optical-care" }])} />
       <PageHero
         eyebrow="Optical Care"
         title="RKM Optical Care"

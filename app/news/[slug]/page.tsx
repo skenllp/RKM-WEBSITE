@@ -7,6 +7,8 @@ import { buildMetadata } from "@/lib/seo";
 import { formatDate } from "@/lib/utils";
 import { PageHero, CtaBand } from "@/components/Section";
 import { ArrowRight } from "@/components/Icons";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbJsonLd, newsArticleJsonLd } from "@/lib/structured-data";
 
 type Params = { slug: string };
 
@@ -41,9 +43,17 @@ export default async function NewsPostPage({ params }: { params: Promise<Params>
   const post = newsPosts.find((p) => p.slug === slug);
   if (!post) notFound();
   const date = formatDate(post.date);
+  const article = newsArticleJsonLd(post);
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "News & Updates", path: "/news" },
+          { name: post.title, path: `/news/${post.slug}` },
+        ])}
+      />
+      {article ? <JsonLd data={article} /> : null}
       <PageHero
         eyebrow={post.category}
         title={post.title}

@@ -18,7 +18,7 @@ import { ArrowRight, InstagramIcon } from "@/components/Icons";
 
 export const metadata = buildMetadata({
   title: site.name,
-  description: site.description,
+  description: site.seoDescription,
   path: "/",
 });
 

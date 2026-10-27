@@ -1,4 +1,6 @@
 import { buildMetadata } from "@/lib/seo";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbJsonLd } from "@/lib/structured-data";
 import { site } from "@/content/site";
 import { PageHero, CtaBand } from "@/components/Section";
 import { ServicesGrid } from "@/components/ServicesGrid";
@@ -6,14 +8,15 @@ import { DraftNote } from "@/components/DraftNote";
 import { Reveal } from "@/components/Reveal";
 
 export const metadata = buildMetadata({
-  title: "Eye Care Services",
-  description: `Eye care services at ${site.name}: general ophthalmology, paediatric eye care, cataract, corneal diseases, glaucoma, uvea and medical retina.`,
+  title: "Eye Care Services in Parappanangadi",
+  description: `Eye care at ${site.name}, Parappanangadi: general ophthalmology, paediatric eye care, cataract, corneal diseases, glaucoma, uvea and medical retina. Opening soon.`,
   path: "/services",
 });
 
 export default function ServicesPage() {
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Eye Care Services", path: "/services" }])} />
       <PageHero
         eyebrow="Eye Care Services"
         title="Seven areas of eye care, one patient-first approach"

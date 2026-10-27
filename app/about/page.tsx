@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbJsonLd } from "@/lib/structured-data";
 import { buildMetadata } from "@/lib/seo";
 import { intro } from "@/content/about";
 import { getImage } from "@/content/gallery";
@@ -14,7 +16,7 @@ import {
 
 export const metadata = buildMetadata({
   title: "About Us",
-  description: `About ${site.fullName}: founded in loving memory of Radhakrishnan, with a commitment to clinical excellence, affordability, integrity and compassionate care.`,
+  description: `About ${site.fullName}, an eye clinic and optical showroom coming soon to Parappanangadi, Kerala. Founded in loving memory of Radhakrishnan on clinical excellence, affordability, integrity and compassion.`,
   path: "/about",
 });
 
@@ -23,6 +25,7 @@ export default function AboutPage() {
   const side = getImage("waiting-area");
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "About Us", path: "/about" }])} />
       <PageHero
         eyebrow="About Us"
         title="Radhakrishnan Memorial Eye Care"

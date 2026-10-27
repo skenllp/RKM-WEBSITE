@@ -2,7 +2,7 @@ import Link from "next/link";
 import { buildMetadata } from "@/lib/seo";
 import { doctor } from "@/content/doctor";
 import { APPOINTMENT_HREF, site } from "@/content/site";
-import { physicianJsonLd } from "@/lib/structured-data";
+import { physicianJsonLd, breadcrumbJsonLd } from "@/lib/structured-data";
 import { JsonLd } from "@/components/JsonLd";
 import { PageHero, CtaBand } from "@/components/Section";
 import { DoctorPortrait } from "@/components/DoctorPortrait";
@@ -11,8 +11,8 @@ import { Reveal } from "@/components/Reveal";
 import { CalendarIcon, ShieldIcon } from "@/components/Icons";
 
 export const metadata = buildMetadata({
-  title: `${doctor.name}, ${doctor.designation}`,
-  description: `${doctor.name} (${doctor.qualifications}), ${doctor.designation} at ${site.name}.`,
+  title: `${doctor.name}, Ophthalmologist`,
+  description: `${doctor.name} (${doctor.qualifications}), ${doctor.designation}. ${doctor.registration}. Eye care for Parappanangadi and Malappuram at ${site.name}.`,
   path: "/doctor",
 });
 
@@ -24,6 +24,7 @@ export default function DoctorPage() {
   const { biography, qualificationDetails, clinicalInterests, awards } = doctor;
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Our Doctor", path: "/doctor" }])} />
       <JsonLd data={physicianJsonLd()} />
       <PageHero
         eyebrow="Our Doctor"

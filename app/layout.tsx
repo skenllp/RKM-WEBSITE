@@ -6,7 +6,7 @@ import "@fontsource/noto-sans-malayalam/600.css";
 import "./globals.css";
 import { site } from "@/content/site";
 import { DEFAULT_OG_IMAGE } from "@/lib/seo";
-import { clinicJsonLd } from "@/lib/structured-data";
+import { clinicJsonLd, websiteJsonLd } from "@/lib/structured-data";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { MobileActionBar } from "@/components/MobileActionBar";
@@ -15,21 +15,46 @@ import { JsonLd } from "@/components/JsonLd";
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name}: ${site.tagline}`,
+    default: site.seoTitle,
     template: `%s | ${site.name}`,
   },
-  description: site.description,
+  description: site.seoDescription,
   applicationName: site.name,
   authors: [{ name: site.fullName }],
+  creator: site.fullName,
+  publisher: site.fullName,
+  keywords: site.keywords,
+  category: "health",
+  alternates: { canonical: "/" },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
+  },
+  // Set GOOGLE_SITE_VERIFICATION (and optionally BING_SITE_VERIFICATION) in Vercel to verify Search Console / Bing Webmaster.
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION,
+    other: process.env.BING_SITE_VERIFICATION ? { "msvalidate.01": process.env.BING_SITE_VERIFICATION } : undefined,
+  },
+  other: {
+    "geo.region": "IN-KL",
+    "geo.placename": site.town,
+  },
   openGraph: {
     type: "website",
     siteName: site.name,
     locale: "en_IN",
-    title: `${site.name}: ${site.tagline}`,
-    description: site.description,
+    title: site.seoTitle,
+    description: site.seoDescription,
+    url: "/",
     images: [DEFAULT_OG_IMAGE],
   },
-  twitter: { card: "summary_large_image", images: [DEFAULT_OG_IMAGE.url] },
+  twitter: {
+    card: "summary_large_image",
+    title: site.seoTitle,
+    description: site.seoDescription,
+    images: [DEFAULT_OG_IMAGE.url],
+  },
   formatDetection: { telephone: false },
 };
 
@@ -53,6 +78,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Footer />
         <MobileActionBar />
         <JsonLd data={clinicJsonLd()} />
+        <JsonLd data={websiteJsonLd()} />
       </body>
     </html>
   );

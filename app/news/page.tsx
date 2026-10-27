@@ -1,4 +1,6 @@
 import { buildMetadata } from "@/lib/seo";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbJsonLd } from "@/lib/structured-data";
 import { site } from "@/content/site";
 import { newsPosts } from "@/content/news";
 import { PageHero } from "@/components/Section";
@@ -8,13 +10,14 @@ import { ArrowRight, InstagramIcon } from "@/components/Icons";
 
 export const metadata = buildMetadata({
   title: "News & Updates",
-  description: `Clinic announcements, opening updates and eye-health awareness from ${site.name}.`,
+  description: `Opening updates, announcements and eye-health awareness from ${site.name}, the new eye clinic and optical showroom coming to Parappanangadi.`,
   path: "/news",
 });
 
 export default function NewsPage() {
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "News & Updates", path: "/news" }])} />
       <PageHero
         eyebrow="News & Updates"
         title="The latest from RKM Eye Care"

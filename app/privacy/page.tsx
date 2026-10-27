@@ -1,4 +1,6 @@
 import { buildMetadata } from "@/lib/seo";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbJsonLd } from "@/lib/structured-data";
 import { site } from "@/content/site";
 import { PageHero } from "@/components/Section";
 import { DraftNote } from "@/components/DraftNote";
@@ -12,6 +14,7 @@ export const metadata = buildMetadata({
 export default function PrivacyPage() {
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Privacy Notice", path: "/privacy" }])} />
       <PageHero eyebrow="Privacy" title="Privacy Notice" />
       <section className="section">
         <div className="container-x max-w-3xl">

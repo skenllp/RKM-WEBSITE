@@ -1,4 +1,6 @@
 import { buildMetadata } from "@/lib/seo";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbJsonLd } from "@/lib/structured-data";
 import { site, telHref } from "@/content/site";
 import { PageHero } from "@/components/Section";
 import { AppointmentForm } from "@/components/AppointmentForm";
@@ -13,8 +15,8 @@ import {
 } from "@/components/Icons";
 
 export const metadata = buildMetadata({
-  title: "Contact Us",
-  description: `Contact ${site.name} or send an appointment request. The clinic will contact you to confirm a time.`,
+  title: "Contact & Book an Appointment",
+  description: `Contact ${site.name} in Parappanangadi or send an appointment request online. The clinic will call you to confirm a suitable time.`,
   path: "/contact",
 });
 
@@ -44,6 +46,7 @@ export default function ContactPage() {
   const c = site.contact;
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Contact Us", path: "/contact" }])} />
       <PageHero
         eyebrow="Contact Us"
         title="We would be glad to hear from you"

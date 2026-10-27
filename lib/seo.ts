@@ -29,22 +29,24 @@ export function buildMetadata({
   type = "website",
 }: PageMeta): Metadata {
   const isHome = path === "/";
+  // A title that already contains the brand name is not given the " | RKM Eye Care" suffix again.
+  const branded = !isHome && title.includes(site.name);
   return {
-    title: isHome ? { absolute: `${site.name}: ${site.tagline}` } : title,
+    title: isHome ? { absolute: site.seoTitle } : branded ? { absolute: title } : title,
     description,
     alternates: { canonical: path },
     openGraph: {
       type,
       siteName: site.name,
       locale: "en_IN",
-      title: isHome ? `${site.name}: ${site.tagline}` : `${title} | ${site.name}`,
+      title: isHome ? site.seoTitle : branded ? title : `${title} | ${site.name}`,
       description,
       url: path,
       images: [image],
     },
     twitter: {
       card: "summary_large_image",
-      title: isHome ? `${site.name}: ${site.tagline}` : `${title} | ${site.name}`,
+      title: isHome ? site.seoTitle : branded ? title : `${title} | ${site.name}`,
       description,
       images: [image.url],
     },

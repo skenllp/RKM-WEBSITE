@@ -1,4 +1,6 @@
 import { buildMetadata } from "@/lib/seo";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbJsonLd } from "@/lib/structured-data";
 import { site } from "@/content/site";
 import { getImage } from "@/content/gallery";
 import { PageHero, CtaBand } from "@/components/Section";
@@ -6,8 +8,8 @@ import { GalleryExplorer } from "@/components/GalleryExplorer";
 import { Reveal } from "@/components/Reveal";
 
 export const metadata = buildMetadata({
-  title: "Facilities",
-  description: `A first look at the ${site.name} clinic and RKM Optical Care through architectural visualisations: exterior, reception, consultation area and optical showroom.`,
+  title: "Clinic & Optical Showroom Facilities",
+  description: `A first look at the ${site.name} eye clinic and RKM Optical Care in Parappanangadi: reception, consultation rooms and the optical showroom (architectural visualisations).`,
   path: "/facilities",
 });
 
@@ -15,6 +17,7 @@ export default function FacilitiesPage() {
   const hero = getImage("exterior-front");
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Facilities", path: "/facilities" }])} />
       <PageHero
         eyebrow="Facilities"
         title="A first look at the clinic"
