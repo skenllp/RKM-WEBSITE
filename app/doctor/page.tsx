@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { buildMetadata } from "@/lib/seo";
 import { doctor } from "@/content/doctor";
-import { APPOINTMENT_HREF, site } from "@/content/site";
+import { APPOINTMENT_HREF, cta, site } from "@/content/site";
 import { physicianJsonLd, breadcrumbJsonLd } from "@/lib/structured-data";
 import { JsonLd } from "@/components/JsonLd";
 import { PageHero, CtaBand } from "@/components/Section";
@@ -20,54 +20,48 @@ function Pending({ children }: { children: string }) {
   return <DraftNote alwaysShow={false}>{children}</DraftNote>;
 }
 
+const H2 = "text-[clamp(1.7rem,3vw,2.3rem)]";
+/** Hairline-separated list for plain facts, so they do not read as clickable cards. */
+const LIST = "mt-5 divide-y divide-line border-y border-line";
+
 export default function DoctorPage() {
   const { biography, qualificationDetails, clinicalInterests, awards } = doctor;
   return (
     <>
       <JsonLd data={breadcrumbJsonLd([{ name: "Our Doctor", path: "/doctor" }])} />
       <JsonLd data={physicianJsonLd()} />
-      <PageHero
-        eyebrow="Our Doctor"
-        title={doctor.name}
-        intro={`${doctor.designation}. ${doctor.qualifications}.`}
-      />
+      <PageHero eyebrow="Our Doctor" title={doctor.name} intro={doctor.designation} />
 
       <section className="section">
-        <div className="container-x grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+        <div className="container-x grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24">
           {/* Profile card */}
           <div className="lg:sticky lg:top-28 lg:self-start">
             <Reveal className="mx-auto max-w-sm lg:max-w-none">
               <DoctorPortrait priority />
-              <div className="card mt-5 p-6">
-                <h2 className="text-2xl">{doctor.name}</h2>
-                <p className="mt-1 font-semibold text-teal-700">{doctor.designation}</p>
-                <dl className="mt-5 grid gap-3 text-[0.95rem]">
-                  <div>
-                    <dt className="text-xs font-bold uppercase tracking-[0.14em] text-slate-600">
-                      Qualifications
-                    </dt>
-                    <dd className="font-bold text-navy">{doctor.qualifications}</dd>
-                  </div>
-                  <div>
-                    <dt className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.14em] text-slate-600">
-                      <ShieldIcon width={16} height={16} className="text-teal-700" />
-                      Registration
-                    </dt>
-                    <dd className="font-bold text-navy">{doctor.registration}</dd>
-                  </div>
-                </dl>
-                <Link href={APPOINTMENT_HREF} className="btn btn-primary mt-6 w-full">
-                  <CalendarIcon width={19} height={19} />
-                  Book an Appointment
-                </Link>
-              </div>
+              <dl className="mt-6 grid gap-4 text-[0.95rem]">
+                <div>
+                  <dt className="label">Qualifications</dt>
+                  <dd className="mt-0.5 font-semibold text-navy">{doctor.qualifications}</dd>
+                </div>
+                <div>
+                  <dt className="label flex items-center gap-1.5">
+                    <ShieldIcon width={16} height={16} className="text-teal-700" />
+                    Registration
+                  </dt>
+                  <dd className="mt-0.5 font-semibold text-navy">{doctor.registration}</dd>
+                </div>
+              </dl>
+              <Link href={APPOINTMENT_HREF} className="btn btn-primary mt-6 w-full">
+                <CalendarIcon width={19} height={19} />
+                {cta.label}
+              </Link>
             </Reveal>
           </div>
 
           {/* Details */}
-          <div className="grid content-start gap-12">
+          <div className="grid content-start gap-14">
             <Reveal>
-              <h2 className="text-[clamp(1.6rem,3vw,2.2rem)]">Biography</h2>
+              <h2 className={H2}>Biography</h2>
               <div className="mt-5 grid gap-4 text-[1.05rem] leading-relaxed text-slate-600">
                 {biography ? (
                   biography.map((p) => <p key={p}>{p}</p>)
@@ -83,18 +77,18 @@ export default function DoctorPage() {
             </Reveal>
 
             <Reveal>
-              <h2 className="text-[clamp(1.6rem,3vw,2.2rem)]">Qualifications</h2>
-              <ul className="mt-5 grid gap-3">
+              <h2 className={H2}>Qualifications</h2>
+              <ul className={LIST}>
                 {qualificationDetails ? (
                   qualificationDetails.map((q) => (
-                    <li key={q.title} className="card p-5">
-                      <p className="font-bold text-navy">{q.title}</p>
+                    <li key={q.title} className="py-4">
+                      <p className="font-semibold text-navy">{q.title}</p>
                       {q.institution ? <p className="text-slate-600">{q.institution}</p> : null}
                     </li>
                   ))
                 ) : (
-                  <li className="card p-5">
-                    <p className="font-bold text-navy">{doctor.qualifications}</p>
+                  <li className="py-4">
+                    <p className="font-semibold text-navy">{doctor.qualifications}</p>
                   </li>
                 )}
               </ul>
@@ -108,11 +102,11 @@ export default function DoctorPage() {
             {/* The next two sections appear when filled in, or as labelled placeholders while draft notes are on. */}
             {clinicalInterests || site.showDraftNotes ? (
               <Reveal>
-                <h2 className="text-[clamp(1.6rem,3vw,2.2rem)]">Areas of Clinical Interest</h2>
+                <h2 className={H2}>Areas of Clinical Interest</h2>
                 {clinicalInterests ? (
-                  <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+                  <ul className="mt-5 grid gap-x-10 border-t border-line sm:grid-cols-2">
                     {clinicalInterests.map((c) => (
-                      <li key={c} className="card p-5 font-semibold text-navy">
+                      <li key={c} className="border-b border-line py-4 font-medium text-navy">
                         {c}
                       </li>
                     ))}
@@ -127,11 +121,11 @@ export default function DoctorPage() {
 
             {awards || site.showDraftNotes ? (
               <Reveal>
-                <h2 className="text-[clamp(1.6rem,3vw,2.2rem)]">Academic Awards and Achievements</h2>
+                <h2 className={H2}>Academic Awards and Achievements</h2>
                 {awards ? (
-                  <ul className="mt-5 grid gap-3">
+                  <ul className={LIST}>
                     {awards.map((a) => (
-                      <li key={a} className="card p-5 font-semibold text-navy">
+                      <li key={a} className="py-4 font-medium text-navy">
                         {a}
                       </li>
                     ))}
@@ -148,7 +142,7 @@ export default function DoctorPage() {
       </section>
 
       <CtaBand
-        title={`Book a consultation with ${doctor.name}`}
+        title={site.bookingOpen ? `Book a consultation with ${doctor.name}` : `Meet ${doctor.name} when we open`}
         text="Send an appointment request and the clinic will contact you to confirm a time."
       />
     </>

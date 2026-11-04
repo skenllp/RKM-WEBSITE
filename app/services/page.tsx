@@ -24,13 +24,15 @@ export default function ServicesPage() {
       />
       <section className="section">
         <div className="container-x">
-          <Reveal className="mb-8">
-            <DraftNote>
-              Service availability to be confirmed by the clinic before this page is published
-            </DraftNote>
-          </Reveal>
+          {site.showDraftNotes ? (
+            <Reveal className="mb-8">
+              <DraftNote>
+                Service availability to be confirmed by the clinic before this page is published
+              </DraftNote>
+            </Reveal>
+          ) : null}
           <ServicesGrid showDetail headingLevel="h2" />
-          <Reveal className="mt-10 max-w-3xl rounded-2xl bg-mist p-6 text-[0.95rem] text-slate-600">
+          <Reveal className="mt-10 max-w-3xl rounded-2xl bg-ivory p-6 text-[0.95rem] text-slate-600">
             <p>
               <strong className="text-navy">Please note:</strong> the information on this website is
               general and is not a substitute for an eye examination or medical advice. If you have

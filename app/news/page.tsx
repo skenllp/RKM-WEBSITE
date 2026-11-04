@@ -3,10 +3,9 @@ import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbJsonLd } from "@/lib/structured-data";
 import { site } from "@/content/site";
 import { newsPosts } from "@/content/news";
-import { PageHero } from "@/components/Section";
+import { InstagramCard, PageHero } from "@/components/Section";
 import { NewsCard } from "@/components/NewsCard";
 import { Reveal } from "@/components/Reveal";
-import { ArrowRight, InstagramIcon } from "@/components/Icons";
 
 export const metadata = buildMetadata({
   title: "News & Updates",
@@ -15,6 +14,7 @@ export const metadata = buildMetadata({
 });
 
 export default function NewsPage() {
+  const [latest, ...older] = newsPosts;
   return (
     <>
       <JsonLd data={breadcrumbJsonLd([{ name: "News & Updates", path: "/news" }])} />
@@ -26,38 +26,26 @@ export default function NewsPage() {
       <section className="section">
         <div className="container-x">
           <ul className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {newsPosts.map((post, i) => (
+            <li className="md:col-span-2">
+              <Reveal className="h-full">
+                <NewsCard post={latest} headingLevel="h2" featured />
+              </Reveal>
+            </li>
+            <li className="md:col-span-2 lg:col-span-1">
+              <Reveal delay={100} className="h-full">
+                <InstagramCard
+                  title="More on Instagram"
+                  text={`Follow ${site.instagram.handle} for the latest posts and announcements.`}
+                />
+              </Reveal>
+            </li>
+            {older.map((post, i) => (
               <li key={post.slug}>
                 <Reveal delay={(i % 3) * 80} className="h-full">
                   <NewsCard post={post} headingLevel="h2" />
                 </Reveal>
               </li>
             ))}
-            <li>
-              <Reveal delay={100} className="h-full">
-                <a
-                  href={site.instagram.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex h-full min-h-72 flex-col justify-between rounded-[1.25rem] bg-navy p-7 text-white transition duration-300 hover:-translate-y-1 hover:shadow-lift"
-                >
-                  <InstagramIcon width={36} height={36} className="text-teal" />
-                  <span>
-                    <span className="block font-display text-[1.5rem] leading-snug">
-                      More on Instagram
-                    </span>
-                    <span className="mt-2 block text-white/80">
-                      Follow {site.instagram.handle} for the latest posts and announcements.
-                    </span>
-                    <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold">
-                      Open Instagram
-                      <ArrowRight width={18} height={18} className="transition group-hover:translate-x-1" />
-                      <span className="sr-only"> (opens in a new tab)</span>
-                    </span>
-                  </span>
-                </a>
-              </Reveal>
-            </li>
           </ul>
         </div>
       </section>

@@ -21,7 +21,7 @@ Requires Node 20 or newer.
 ## Appointment form: setup (important)
 The form posts to `/api/appointments`, which emails the clinic through [Resend](https://resend.com).
 The visitor is told "request sent" **only after Resend accepts the email**; failures show "Nothing has been sent".
-Until the variables below are set, the form says online requests are not open yet. It never shows a booking confirmation:
+Until the variables below are set **at build time**, the site runs in "opening soon" mode: buttons say "Get Opening Updates" and the contact page invites visitors to follow on Instagram instead of showing the form. Once they are set and the site is redeployed, the form and "Book an Appointment" buttons appear on their own. (`next.config.ts` passes only a true/false value to the browser, as `NEXT_PUBLIC_BOOKING_OPEN`.) The form never shows a booking confirmation:
 the wording is always "request", "not a confirmed booking".
 
 1. **Resend:** create an account, add your domain under *Domains*, add the DNS records (SPF/DKIM) it shows and wait for "Verified". Create an API key under *API Keys* with **Sending access** only, limited to that domain.
@@ -59,7 +59,7 @@ See `docs/LAUNCH-CHECKLIST.md` for the full list of what is done, what is needed
 - WhatsApp number → `contact.whatsapp` (the WhatsApp buttons appear only once this is set)
 - Optical care items and any confirmed services availability
 - Privacy Notice wording should be reviewed by the clinic
-- Set `showDraftNotes: false` in `site.ts` to hide the amber "to be confirmed" labels at launch
+- `showDraftNotes` in `site.ts` is off, so visitors do not see amber "to be confirmed" labels. Missing contact details are simply left out. Set it to `true` to see the labels when reviewing unconfirmed content with the clinic
 
 The doctor profile (`content/doctor.ts`) is complete with the clinic's supplied biography, qualifications, clinical interests, awards, TCMC number and portrait (`public/images/doctor/dr-chandana.webp`, overwrite to replace). Edit the wording only with the clinic's approval.
 

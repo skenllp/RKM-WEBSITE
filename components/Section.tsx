@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { APPOINTMENT_HREF, cta, site } from "@/content/site";
+import { InstagramIcon, ArrowRight } from "./Icons";
 import { Reveal } from "./Reveal";
 import { cn } from "@/lib/utils";
 
@@ -12,6 +14,7 @@ export function SectionHeading({
   className,
   id,
   as: Tag = "h2",
+  tone = "light",
 }: {
   id?: string;
   eyebrow?: string;
@@ -20,7 +23,10 @@ export function SectionHeading({
   align?: "left" | "center";
   className?: string;
   as?: "h1" | "h2";
+  /** "dark" is for headings on a navy section. */
+  tone?: "light" | "dark";
 }) {
+  const dark = tone === "dark";
   return (
     <Reveal
       className={cn(
@@ -29,10 +35,14 @@ export function SectionHeading({
         className,
       )}
     >
-      {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
-      <Tag id={id} className="mt-4 text-[clamp(1.9rem,4.2vw,3rem)]">{title}</Tag>
+      {eyebrow ? <p className={cn("eyebrow", dark && "!text-aqua")}>{eyebrow}</p> : null}
+      <Tag id={id} className={cn("mt-5 text-[clamp(2rem,4.2vw,3.1rem)]", dark && "!text-white")}>
+        {title}
+      </Tag>
       {intro ? (
-        <div className="mt-5 text-[1.05rem] leading-relaxed text-slate-600">{intro}</div>
+        <div className={cn("mt-5 text-[1.05rem] leading-relaxed", dark ? "text-white/80" : "text-slate-600")}>
+          {intro}
+        </div>
       ) : null}
     </Reveal>
   );
@@ -69,12 +79,12 @@ export function PageHero({
       ) : (
         <div
           aria-hidden="true"
-          className="absolute inset-0 -z-10 bg-[radial-gradient(60rem_30rem_at_90%_-10%,rgb(0_160_170/0.35),transparent_60%)]"
+          className="absolute inset-0 -z-10 bg-[radial-gradient(60rem_30rem_at_90%_-10%,rgb(0_160_170/0.28),transparent_60%)]"
         />
       )}
-      <div className="container-x py-16 sm:py-20 lg:py-28">
-        <p className="eyebrow !text-white/85 before:!bg-teal">{eyebrow}</p>
-        <h1 className="mt-4 max-w-3xl text-[clamp(2.2rem,5.5vw,3.75rem)] !text-white">{title}</h1>
+      <div className="container-x py-14 sm:py-16 lg:py-20">
+        <p className="eyebrow !text-aqua">{eyebrow}</p>
+        <h1 className="mt-5 max-w-3xl text-[clamp(2.2rem,5.5vw,3.5rem)] !text-white">{title}</h1>
         {intro ? (
           <div className="mt-5 max-w-2xl text-[1.08rem] leading-relaxed text-white/85">{intro}</div>
         ) : null}
@@ -83,7 +93,7 @@ export function PageHero({
   );
 }
 
-/** Closing call-to-action band shared by most pages. */
+/** Closing call-to-action band shared by most pages. Sits on ivory, so the section before it should be white. */
 export function CtaBand({
   title = "Ready to look after your eyes?",
   text = "Send an appointment request and the clinic will get back to you to confirm.",
@@ -92,27 +102,54 @@ export function CtaBand({
   text?: string;
 }) {
   return (
-    <section className="bg-mist">
+    <section className="bg-ivory">
       <div className="container-x section">
-        <Reveal className="relative overflow-hidden rounded-[1.75rem] bg-navy px-6 py-12 text-center text-white sm:px-12 sm:py-16">
+        <Reveal className="relative isolate overflow-hidden rounded-2xl bg-navy px-6 py-14 text-center text-white sm:px-12 sm:py-20">
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -right-24 -top-24 size-72 rounded-full bg-teal/25 blur-3xl"
+            className="absolute inset-0 -z-10 bg-[radial-gradient(44rem_22rem_at_50%_-20%,rgb(0_160_170/0.3),transparent_70%)]"
           />
-          <h2 className="relative mx-auto max-w-2xl text-[clamp(1.8rem,4vw,2.75rem)] !text-white">
-            {title}
-          </h2>
-          <p className="relative mx-auto mt-4 max-w-xl text-white/85">{text}</p>
-          <div className="relative mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Link href="/contact#appointment" className="btn btn-light">
-              Book an Appointment
+          <h2 className="mx-auto max-w-2xl text-[clamp(1.9rem,4vw,2.9rem)] !text-white">{title}</h2>
+          <p className="mx-auto mt-4 max-w-xl text-white/85">
+            {site.bookingOpen
+              ? text
+              : `We are opening soon in ${site.town}. Follow along for the opening date and first appointments.`}
+          </p>
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Link href={APPOINTMENT_HREF} className="btn btn-light">
+              {cta.label}
             </Link>
-            <Link href="/contact" className="btn btn-ghost-light">
-              Contact Us
-            </Link>
+            {site.bookingOpen ? (
+              <Link href="/contact" className="btn btn-ghost-light">
+                Contact Us
+              </Link>
+            ) : null}
           </div>
         </Reveal>
       </div>
     </section>
+  );
+}
+
+/** Instagram tile that sits beside news posts. */
+export function InstagramCard({ title, text }: { title: string; text: string }) {
+  return (
+    <a
+      href={site.instagram.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group flex h-full min-h-64 flex-col justify-between gap-10 rounded-2xl bg-navy p-8 text-white transition-colors duration-300 hover:bg-navy-900"
+    >
+      <InstagramIcon width={32} height={32} className="text-aqua" />
+      <span>
+        <span className="block font-display text-[1.6rem] leading-snug">{title}</span>
+        <span className="mt-2 block text-white/80">{text}</span>
+        <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold">
+          Open Instagram
+          <ArrowRight width={18} height={18} className="transition group-hover:translate-x-1" />
+          <span className="sr-only"> (opens in a new tab)</span>
+        </span>
+      </span>
+    </a>
   );
 }

@@ -73,21 +73,34 @@ export const site = {
    * content (services availability, optical services, doctor biography).
    * Set to false once the clinic has signed off on the content.
    */
-  showDraftNotes: true,
+  showDraftNotes: false,
+
+  /**
+   * True once appointment email delivery is configured (worked out in
+   * next.config.ts at build time). Until then the site invites visitors to
+   * follow for opening updates instead of showing a form that cannot send.
+   */
+  bookingOpen: process.env.NEXT_PUBLIC_BOOKING_OPEN === "true",
 };
 
+/** `short` is the compact label used in the desktop header. */
 export const navigation = [
-  { label: "Home", href: "/" },
-  { label: "About Us", href: "/about" },
-  { label: "Eye Care Services", href: "/services" },
-  { label: "Our Doctor", href: "/doctor" },
-  { label: "Optical Care", href: "/optical-care" },
-  { label: "Facilities", href: "/facilities" },
-  { label: "News & Updates", href: "/news" },
-  { label: "Contact Us", href: "/contact" },
+  { label: "Home", short: "Home", href: "/" },
+  { label: "About Us", short: "About", href: "/about" },
+  { label: "Eye Care Services", short: "Services", href: "/services" },
+  { label: "Our Doctor", short: "Our Doctor", href: "/doctor" },
+  { label: "Optical Care", short: "Optical", href: "/optical-care" },
+  { label: "Facilities", short: "Facilities", href: "/facilities" },
+  { label: "News & Updates", short: "News", href: "/news" },
+  { label: "Contact Us", short: "Contact", href: "/contact" },
 ] as const;
 
 export const APPOINTMENT_HREF = "/contact#appointment";
+
+/** Wording of the main call to action, which follows `site.bookingOpen`. */
+export const cta = site.bookingOpen
+  ? { label: "Book an Appointment", medium: "Book Appointment" }
+  : { label: "Get Opening Updates", medium: "Opening Updates" };
 
 export function telHref(phone: string) {
   return `tel:${phone.replace(/[^\d+]/g, "")}`;

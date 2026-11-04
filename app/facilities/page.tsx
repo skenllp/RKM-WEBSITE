@@ -26,7 +26,7 @@ export default function FacilitiesPage() {
       />
       <section className="section">
         <div className="container-x">
-          <Reveal className="mb-8 max-w-3xl rounded-2xl border border-teal/30 bg-mist p-5 text-[0.95rem] text-slate-600">
+          <Reveal className="mb-8 max-w-3xl rounded-2xl bg-ivory p-5 text-[0.95rem] text-slate-600">
             <p>
               <strong className="text-navy">Architectural visualisations.</strong> These images are
               design renderings, not photographs of the completed clinic. They will be replaced with

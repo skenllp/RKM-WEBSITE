@@ -37,7 +37,9 @@ Status key: [x] done, [ ] still to do.
   - `NEXT_PUBLIC_SITE_URL` (final `https://` domain)
 - [ ] Redeploy after setting variables (they are read at build/start)
 - [ ] Attach the custom domain, confirm HTTPS
-- [ ] Fill `content/site.ts` (phone, email, whatsapp, address, mapsUrl, hours) and `content/doctor.ts`; set `showDraftNotes: false`
+- [ ] Fill `content/site.ts` (phone, email, whatsapp, address, mapsUrl, hours) and `content/doctor.ts`
+- [ ] Confirm the appointment form and "Book an Appointment" buttons appeared after the redeploy (the site stays in "opening soon" mode until the three email variables are set)
+- [ ] Decide on the eyewear and Apple logos visible in the showroom renders: retouch them or confirm they may be shown
 - [ ] Turn on Vercel Deployment Protection for Preview URLs so unfinished drafts are not public
 - [ ] Add a Vercel Firewall rate-limit rule for `POST /api/appointments`
 - [ ] Add a CAPTCHA (see section 5) before announcing the form publicly

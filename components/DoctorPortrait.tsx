@@ -11,7 +11,7 @@ export function DoctorPortrait({ className, priority = false }: { className?: st
   return (
     <div
       className={cn(
-        "relative aspect-[4/5] w-full overflow-hidden rounded-[1.75rem] bg-gradient-to-b from-mist to-mist-200",
+        "relative aspect-[4/5] w-full overflow-hidden rounded-2xl bg-ivory",
         className,
       )}
     >
@@ -39,10 +39,6 @@ export function DoctorPortrait({ className, priority = false }: { className?: st
           <DraftNote alwaysShow>Professional portrait to be provided</DraftNote>
         </div>
       )}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-1.5 bg-gradient-to-r from-navy via-teal to-navy"
-      />
     </div>
   );
 }

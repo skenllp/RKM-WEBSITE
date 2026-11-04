@@ -4,11 +4,9 @@ import { breadcrumbJsonLd } from "@/lib/structured-data";
 import { buildMetadata } from "@/lib/seo";
 import { site } from "@/content/site";
 import { getImage } from "@/content/gallery";
-import { opticalAreas } from "@/content/optical";
+import { opticalAreas, opticalSpace } from "@/content/optical";
 import { PageHero, SectionHeading, CtaBand } from "@/components/Section";
 import { Reveal } from "@/components/Reveal";
-import { DraftNote } from "@/components/DraftNote";
-import { EyeIcon } from "@/components/Icons";
 
 export const metadata = buildMetadata({
   title: "Optical Care & Eyewear in Parappanangadi",
@@ -20,7 +18,8 @@ export default function OpticalCarePage() {
   const hero = getImage("optical-showroom-wall");
   const a = getImage("optical-showroom-corner");
   const b = getImage("optical-waiting-view");
-  const areas = opticalAreas.filter((x) => x.description !== null || site.showDraftNotes);
+  const confirmed = opticalAreas.filter((x) => x.description !== null);
+  const areas = confirmed.length > 0 ? confirmed : opticalSpace;
 
   return (
     <>
@@ -29,13 +28,12 @@ export default function OpticalCarePage() {
         eyebrow="Optical Care"
         title="RKM Optical Care"
         intro="A calm, well-lit eyewear space designed to sit alongside the clinic."
-        image={{ src: hero.src, blurDataURL: hero.blurDataURL }}
       />
 
       <section className="section">
         <div className="container-x">
           <figure>
-            <Reveal className="overflow-hidden rounded-[1.75rem] shadow-lift">
+            <Reveal className="overflow-hidden rounded-2xl">
               <Image
                 src={hero.src}
                 alt={hero.alt}
@@ -52,46 +50,32 @@ export default function OpticalCarePage() {
             </figcaption>
           </figure>
 
-          <div className="mt-16 grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+          <div className="mt-16 grid items-center gap-10 lg:mt-24 lg:grid-cols-[1fr_1fr] lg:gap-24">
             <SectionHeading
               eyebrow="What to expect"
               title="Eyewear, in the same place as your eye care"
               intro="RKM Optical Care is planned as the eyewear showroom of RKM Eye Care, with open displays, seating for fittings and a counter for personal assistance."
             />
-            <div>
-              <ul className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
-                {areas.map((o, i) => (
-                  <li key={o.title}>
-                    <Reveal delay={i * 80} className="h-full">
-                      <div className="card h-full p-6">
-                        <span className="flex size-12 items-center justify-center rounded-2xl bg-mist text-teal-700">
-                          <EyeIcon width={26} height={26} />
-                        </span>
-                        <h3 className="mt-5 text-[1.3rem]">{o.title}</h3>
-                        {o.description ? (
-                          <p className="mt-2 text-[0.95rem] text-slate-600">{o.description}</p>
-                        ) : (
-                          <p className="mt-3">
-                            <DraftNote>Details to be confirmed</DraftNote>
-                          </p>
-                        )}
-                      </div>
-                    </Reveal>
+            <Reveal>
+              <ul className="divide-y divide-line border-y border-line">
+                {areas.map((o) => (
+                  <li key={o.title} className="py-5">
+                    <h3 className="text-[1.3rem]">{o.title}</h3>
+                    {o.description ? (
+                      <p className="mt-1 text-[0.97rem] text-slate-600">{o.description}</p>
+                    ) : null}
                   </li>
                 ))}
               </ul>
-              <Reveal className="mt-5">
-                <DraftNote>Optical products and services will be listed once the clinic confirms them</DraftNote>
-              </Reveal>
-            </div>
+            </Reveal>
           </div>
 
-          <ul className="mt-16 grid gap-5 md:grid-cols-2">
+          <ul className="mt-16 grid gap-5 md:grid-cols-2 lg:mt-24">
             {[a, b].map((g, i) => (
               <li key={g.id}>
                 <Reveal delay={i * 100}>
                   <figure>
-                    <div className="overflow-hidden rounded-[1.5rem] shadow-soft">
+                    <div className="overflow-hidden rounded-2xl">
                       <Image
                         src={g.src}
                         alt={g.alt}
@@ -101,7 +85,7 @@ export default function OpticalCarePage() {
                         blurDataURL={g.blurDataURL}
                         loading="lazy"
                         sizes="(min-width: 768px) 580px, 94vw"
-                        className="h-auto w-full"
+                        className="aspect-[4/3] w-full object-cover"
                       />
                     </div>
                     <figcaption className="mt-3 text-sm text-slate-600">
@@ -113,7 +97,7 @@ export default function OpticalCarePage() {
             ))}
           </ul>
 
-          <Reveal className="mt-10 max-w-3xl rounded-2xl bg-mist p-6 text-[0.95rem] text-slate-600">
+          <Reveal className="mt-10 max-w-3xl rounded-2xl bg-ivory p-6 text-[0.95rem] text-slate-600">
             <p>
               <strong className="text-navy">About the visualisations:</strong> signage, fittings and any
               eyewear brand names shown in these images are part of the architectural design and do not

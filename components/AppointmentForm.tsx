@@ -130,7 +130,7 @@ export function AppointmentForm() {
         ref={resultRef}
         tabIndex={-1}
         role="status"
-        className="rounded-2xl border border-teal/40 bg-mist p-8 outline-none"
+        className="rounded-2xl border border-teal/40 bg-ivory p-8 outline-none"
       >
         <span className="flex size-12 items-center justify-center rounded-full bg-teal text-white">
           <CheckIcon width={26} height={26} />
@@ -158,9 +158,9 @@ export function AppointmentForm() {
   return (
     <form onSubmit={onSubmit} noValidate aria-describedby={id("intro")} className="grid gap-5">
       <p id={id("intro")} className="text-[0.95rem] text-slate-600">
-        Fields marked <span aria-hidden="true">*</span>
-        <span className="sr-only">with an asterisk</span> are required. Sending this form requests an
-        appointment. It does not confirm one.
+        Your appointment is confirmed only when the clinic contacts you. Fields marked{" "}
+        <span aria-hidden="true">*</span>
+        <span className="sr-only">with an asterisk</span> are required.
       </p>
 
       {errorList.length > 0 ? (

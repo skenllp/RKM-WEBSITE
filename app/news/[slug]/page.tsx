@@ -69,7 +69,7 @@ export default async function NewsPostPage({ params }: { params: Promise<Params>
               height={post.image.height}
               priority
               sizes="(min-width: 768px) 720px, 94vw"
-              className="h-auto w-full rounded-[1.5rem] shadow-lift"
+              className="h-auto w-full rounded-2xl"
             />
           ) : null}
           {post.malayalam ? (

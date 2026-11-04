@@ -16,3 +16,10 @@ export const opticalAreas: { title: string; description: string | null }[] = [
   { title: "Frames", description: null },
   { title: "Optical services", description: null },
 ];
+
+/** What the showroom design shows, displayed until the items above are confirmed. */
+export const opticalSpace: { title: string; description: string }[] = [
+  { title: "Open displays", description: "Frames arranged on well-lit displays." },
+  { title: "Seating for fittings", description: "A place to sit while eyewear is fitted." },
+  { title: "Personal assistance", description: "A counter where someone can help you." },
+];

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { APPOINTMENT_HREF, navigation, site, telHref } from "@/content/site";
+import { APPOINTMENT_HREF, cta, navigation, site, telHref } from "@/content/site";
 import { Logo } from "./Logo";
 import {
   ArrowRight,
@@ -58,7 +58,7 @@ export function Header() {
 
   // Close the menu if the viewport grows to desktop size.
   useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1280px)");
+    const mq = window.matchMedia("(min-width: 1024px)");
     const handler = () => mq.matches && setOpen(false);
     mq.addEventListener("change", handler);
     return () => mq.removeEventListener("change", handler);
@@ -86,8 +86,8 @@ export function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 border-b border-mist-200 bg-white/92 backdrop-blur-md">
-        <div className="container-x grid h-[4.5rem] grid-cols-[3rem_1fr_auto] items-center gap-2 xl:flex xl:h-20 xl:justify-between xl:gap-4 2xl:gap-6">
+      <header className="sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur-md">
+        <div className="container-x grid h-[4.5rem] grid-cols-[3rem_1fr_3rem] items-center gap-2 md:grid-cols-[3rem_1fr_auto] lg:flex lg:h-20 lg:justify-between lg:gap-4">
           {/* Hamburger: top left on mobile */}
           <button
             ref={openBtnRef}
@@ -96,20 +96,20 @@ export function Header() {
             aria-label="Open main menu"
             aria-expanded={open}
             aria-controls="mobile-menu"
-            className="-ml-2 flex size-12 items-center justify-center rounded-full text-navy transition hover:bg-mist xl:hidden"
+            className="-ml-2 flex size-12 items-center justify-center rounded-full text-navy transition hover:bg-ivory lg:hidden"
           >
             <MenuIcon width={28} height={28} />
           </button>
 
           {/* Logo: centred on mobile, left on desktop */}
-          <div className="flex shrink-0 justify-center xl:justify-start">
-            <Logo priority height={44} />
+          <div className="flex shrink-0 justify-center lg:justify-start">
+            <Logo priority height={42} />
           </div>
 
-          {/* Desktop navigation */}
-          <nav aria-label="Main" className="hidden xl:block">
-            <ul className="flex items-center gap-0.5">
-              {navigation.map((item) => {
+          {/* Desktop navigation (the logo links home, so "Home" is not repeated here) */}
+          <nav aria-label="Main" className="hidden lg:block">
+            <ul className="flex items-center gap-1">
+              {navigation.slice(1).map((item) => {
                 const active = isActive(pathname, item.href);
                 return (
                   <li key={item.href}>
@@ -117,13 +117,13 @@ export function Header() {
                       href={item.href}
                       aria-current={active ? "page" : undefined}
                       className={cn(
-                        "relative whitespace-nowrap rounded-full px-2 py-2 text-[0.9rem] font-semibold transition-colors 2xl:px-3",
+                        "relative whitespace-nowrap px-2.5 py-2 text-[0.9rem] font-medium transition-colors xl:px-3.5",
                         active ? "text-navy" : "text-slate-600 hover:text-navy",
-                        "after:absolute after:inset-x-3 after:-bottom-0.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded after:bg-teal after:transition-transform",
+                        "after:absolute after:inset-x-2.5 after:bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-teal-700 after:transition-transform xl:after:inset-x-3.5",
                         active ? "after:scale-x-100" : "hover:after:scale-x-100",
                       )}
                     >
-                      {item.label}
+                      {item.short}
                     </Link>
                   </li>
                 );
@@ -131,16 +131,13 @@ export function Header() {
             </ul>
           </nav>
 
-          {/* Appointment access */}
-          <div className="flex justify-end">
+          {/* Appointment access. Phones get this from the bottom bar instead. */}
+          <div className="hidden justify-end md:flex">
             <Link
               href={APPOINTMENT_HREF}
-              className="btn btn-primary !min-h-11 whitespace-nowrap !px-4 text-sm xl:!px-5"
+              className="btn btn-primary !min-h-11 whitespace-nowrap !px-5 text-sm"
             >
-              <CalendarIcon width={18} height={18} className="hidden sm:block" />
-              <span>
-                Book<span className="hidden sm:inline"> <span className="hidden 2xl:inline">an </span>Appointment</span>
-              </span>
+              {cta.medium}
             </Link>
           </div>
         </div>
@@ -156,20 +153,20 @@ export function Header() {
         inert={!open}
         onKeyDown={trapFocus}
         className={cn(
-          "fixed inset-0 z-50 flex flex-col overflow-y-auto bg-white xl:hidden",
+          "fixed inset-0 z-50 flex flex-col overflow-y-auto bg-white lg:hidden",
           "transition-[opacity,transform,visibility] duration-300 ease-[var(--ease-out-soft)]",
           open
             ? "visible translate-y-0 opacity-100"
             : "invisible pointer-events-none -translate-y-3 opacity-0",
         )}
       >
-        <div className="container-x grid h-[4.5rem] shrink-0 grid-cols-[3rem_1fr_3rem] items-center gap-2 border-b border-mist-200">
+        <div className="container-x grid h-[4.5rem] shrink-0 grid-cols-[3rem_1fr_3rem] items-center gap-2 border-b border-line">
           <button
             ref={closeBtnRef}
             type="button"
             onClick={close}
             aria-label="Close main menu"
-            className="-ml-2 flex size-12 items-center justify-center rounded-full text-navy transition hover:bg-mist"
+            className="-ml-2 flex size-12 items-center justify-center rounded-full text-navy transition hover:bg-ivory"
           >
             <CloseIcon width={28} height={28} />
           </button>
@@ -187,7 +184,7 @@ export function Header() {
                 <li
                   key={item.href}
                   className={cn(
-                    "border-b border-mist-200/80 transition-[opacity,transform] duration-500 ease-[var(--ease-out-soft)]",
+                    "border-b border-line transition-[opacity,transform] duration-500 ease-[var(--ease-out-soft)]",
                     open ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
                   )}
                   style={{ transitionDelay: open ? `${80 + i * 45}ms` : "0ms" }}
@@ -215,11 +212,11 @@ export function Header() {
         </nav>
 
         {/* Persistent appointment + contact access */}
-        <div className="shrink-0 border-t border-mist-200 bg-mist px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-5">
+        <div className="shrink-0 border-t border-line bg-ivory px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-5">
           <div className="mx-auto flex max-w-md flex-col gap-3">
             <Link href={APPOINTMENT_HREF} onClick={close} className="btn btn-primary w-full">
               <CalendarIcon width={20} height={20} />
-              Book an Appointment
+              {cta.label}
             </Link>
             <div className="grid grid-cols-2 gap-3">
               {phone ? (

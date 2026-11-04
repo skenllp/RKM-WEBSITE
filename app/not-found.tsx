@@ -17,12 +17,11 @@ export default function NotFound() {
         <p className="eyebrow justify-center">Error 404</p>
         <h1 className="mt-4 text-[clamp(2rem,5vw,3rem)]">We could not find that page</h1>
         <p className="mt-4 text-slate-600">
-          The link may be old or mistyped. You can head back to the home page or send us an
-          appointment request.
+          The link may be old or mistyped. You can head back to the home page or explore our services.
         </p>
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
           <Link href="/" className="btn btn-primary">Go to Home</Link>
-          <Link href="/contact#appointment" className="btn btn-outline">Book an Appointment</Link>
+          <Link href="/services" className="btn btn-outline">Explore Our Services</Link>
         </div>
       </div>
     </section>

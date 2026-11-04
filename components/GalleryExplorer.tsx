@@ -17,10 +17,13 @@ export function GalleryExplorer({
   initialFilter = "All",
   limit,
   showFilters = true,
+  preview = false,
 }: {
   initialFilter?: Filter;
   limit?: number;
   showFilters?: boolean;
+  /** Home page layout: large first image, and a swipeable row on phones. */
+  preview?: boolean;
 }) {
   const [filter, setFilter] = useState<Filter>(initialFilter);
   const [active, setActive] = useState<number | null>(null);
@@ -88,7 +91,7 @@ export function GalleryExplorer({
                   "shrink-0 whitespace-nowrap rounded-full border px-4 py-2.5 text-sm font-semibold transition",
                   on
                     ? "border-navy bg-navy text-white"
-                    : "border-mist-200 bg-white text-slate-600 hover:border-navy hover:text-navy",
+                    : "border-line bg-white text-slate-600 hover:border-navy hover:text-navy",
                 )}
               >
                 {c}
@@ -103,35 +106,57 @@ export function GalleryExplorer({
         {filter === "All" ? "" : ` in ${filter}`}.
       </p>
 
-      <ul className={cn("columns-1 gap-5 sm:columns-2 lg:columns-3", showFilters && "mt-8")}>
-        {items.map((g, i) => (
-          <li key={g.id} className="mb-5 break-inside-avoid">
-            <button
-              type="button"
-              onClick={(e) => open(i, e.currentTarget)}
-              className="group relative block w-full overflow-hidden rounded-2xl bg-mist text-left shadow-soft"
-              aria-label={`Enlarge image: ${g.caption}`}
+      <ul
+        className={cn(
+          "gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5",
+          showFilters && "mt-8",
+          preview
+            ? "-mx-5 flex snap-x snap-mandatory overflow-x-auto px-5 pb-2 sm:mx-0 sm:grid sm:overflow-visible sm:px-0 sm:pb-0"
+            : "grid",
+        )}
+      >
+        {items.map((g, i) => {
+          const large = preview && i === 0;
+          return (
+            <li
+              key={g.id}
+              className={cn(
+                preview && "w-[82%] shrink-0 snap-center sm:w-auto",
+                large && "sm:col-span-2 lg:row-span-2",
+              )}
             >
-              <Image
-                src={g.src}
-                alt={g.alt}
-                width={g.width}
-                height={g.height}
-                placeholder="blur"
-                blurDataURL={g.blurDataURL}
-                loading="lazy"
-                sizes="(min-width: 1024px) 380px, (min-width: 640px) 45vw, 92vw"
-                className="h-auto w-full transition duration-700 ease-out group-hover:scale-[1.03]"
-              />
-              <span className="flex items-start justify-between gap-2 bg-navy px-4 py-3 text-white sm:absolute sm:inset-x-0 sm:bottom-0 sm:items-end sm:bg-transparent sm:bg-gradient-to-t sm:from-navy-900/85 sm:to-transparent sm:p-4 sm:pt-12">
-                <span className="text-sm font-semibold">{g.caption}</span>
-                <span className="shrink-0 rounded-full bg-white/15 px-2.5 py-1 text-[0.68rem] font-bold uppercase tracking-wider backdrop-blur">
-                  Visualisation
+              <button
+                type="button"
+                onClick={(e) => open(i, e.currentTarget)}
+                className="group relative flex h-full w-full flex-col overflow-hidden rounded-2xl bg-navy text-left"
+                aria-label={`Enlarge image: ${g.caption}`}
+              >
+                <span className="relative block aspect-[4/3] w-full flex-1 overflow-hidden">
+                  <Image
+                    src={g.src}
+                    alt={g.alt}
+                    fill
+                    placeholder="blur"
+                    blurDataURL={g.blurDataURL}
+                    loading="lazy"
+                    sizes={
+                      large
+                        ? "(min-width: 1024px) 770px, (min-width: 640px) 94vw, 82vw"
+                        : "(min-width: 1024px) 380px, (min-width: 640px) 47vw, 92vw"
+                    }
+                    className="object-cover transition duration-700 ease-out group-hover:scale-[1.03]"
+                  />
                 </span>
-              </span>
-            </button>
-          </li>
-        ))}
+                <span className="flex items-baseline justify-between gap-3 bg-navy px-4 py-3 text-white sm:absolute sm:inset-x-0 sm:bottom-0 sm:bg-transparent sm:bg-gradient-to-t sm:from-navy-900/85 sm:to-transparent sm:p-4 sm:pt-14">
+                  <span className="text-sm font-semibold">{g.caption}</span>
+                  <span className="shrink-0 text-[0.68rem] font-semibold uppercase tracking-wider text-white/85">
+                    Visualisation
+                  </span>
+                </span>
+              </button>
+            </li>
+          );
+        })}
       </ul>
 
       <dialog
