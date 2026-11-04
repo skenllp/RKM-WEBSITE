@@ -157,7 +157,7 @@ export function AppointmentForm() {
 
   return (
     <form onSubmit={onSubmit} noValidate aria-describedby={id("intro")} className="grid gap-5">
-      <p id={id("intro")} className="text-[0.95rem] text-slate-600">
+      <p id={id("intro")} className="text-base text-slate-600">
         Your appointment is confirmed only when the clinic contacts you. Fields marked{" "}
         <span aria-hidden="true">*</span>
         <span className="sr-only">with an asterisk</span> are required.
@@ -328,7 +328,7 @@ export function AppointmentForm() {
             aria-describedby={errors.consent ? `${id("consent")}-err` : undefined}
             className="mt-1 size-5 shrink-0 accent-navy"
           />
-          <label htmlFor={id("consent")} className="text-[0.95rem] leading-relaxed text-slate-600">
+          <label htmlFor={id("consent")} className="text-base leading-relaxed text-slate-600">
             I agree that RKM Eye Care may contact me by phone about this request. My details will be
             used only to respond to it, as described in the{" "}
             <Link href="/privacy" className="font-semibold text-navy underline">
@@ -357,7 +357,7 @@ export function AppointmentForm() {
           tabIndex={-1}
           role="alert"
           className={cn(
-            "rounded-xl border p-5 text-[0.95rem] outline-none",
+            "rounded-xl border p-5 text-base outline-none",
             status === "unavailable"
               ? "border-[#b7791f]/50 bg-[#fff8e6] text-[#7a4b00]"
               : "border-[#b42318]/40 bg-[#fef3f2] text-[#7a271a]",
@@ -420,7 +420,7 @@ function Field({
       </label>
       {children}
       {hint ? (
-        <p id={`${id}-hint`} className="mt-1.5 text-[0.82rem] text-slate-600">
+        <p id={`${id}-hint`} className="mt-1.5 text-sm text-slate-600">
           {hint}
         </p>
       ) : null}

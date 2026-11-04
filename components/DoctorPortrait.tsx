@@ -20,7 +20,7 @@ export function DoctorPortrait({ className, priority = false }: { className?: st
           src={doctor.photo}
           alt={doctor.photoAlt}
           fill
-          priority={priority}
+          preload={priority}
           sizes="(min-width: 1024px) 28rem, 90vw"
           className="object-cover object-top"
         />

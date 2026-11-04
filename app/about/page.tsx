@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight } from "@/components/Icons";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbJsonLd } from "@/lib/structured-data";
 import { buildMetadata } from "@/lib/seo";
@@ -47,7 +49,7 @@ export default function AboutPage() {
                 {intro.commitments.map((c) => (
                   <li key={c.title} className="border-t border-line pt-3">
                     <p className="font-semibold text-navy">{c.title}</p>
-                    <p className="text-[0.93rem] text-slate-600">{c.text}</p>
+                    <p className="text-base text-slate-600">{c.text}</p>
                   </li>
                 ))}
               </ul>
@@ -87,6 +89,12 @@ export default function AboutPage() {
           <div className="mt-10">
             <PatientPromise />
           </div>
+          <Reveal className="mt-8">
+            <Link href="/news" className="btn btn-outline">
+              News &amp; Updates
+              <ArrowRight width={18} height={18} />
+            </Link>
+          </Reveal>
         </div>
       </section>
 

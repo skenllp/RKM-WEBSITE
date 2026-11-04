@@ -38,7 +38,7 @@ export default function DoctorPage() {
           <div className="lg:sticky lg:top-28 lg:self-start">
             <Reveal className="mx-auto max-w-sm lg:max-w-none">
               <DoctorPortrait priority />
-              <dl className="mt-6 grid gap-4 text-[0.95rem]">
+              <dl className="mt-6 grid gap-4 text-base">
                 <div>
                   <dt className="label">Qualifications</dt>
                   <dd className="mt-0.5 font-semibold text-navy">{doctor.qualifications}</dd>

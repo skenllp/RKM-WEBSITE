@@ -22,7 +22,7 @@ Status key: [x] done, [ ] still to do.
 - [ ] Clinic address and Google Maps link
 - [ ] Phone number, email address, opening hours
 - [ ] Official WhatsApp number (the WhatsApp buttons stay hidden until supplied)
-- [ ] Which of the 7 service areas are actually offered at opening; any wording changes
+- [ ] Which of the 7 service areas are actually offered at opening; approve the plain-language service names in `content/services.ts` (the original names are listed at the top of that file)
 - [ ] Optical Care: what is offered (eyeglasses, frames, services); confirm no brand partnership claims. Brand names in the renders are design illustrations only
 - [ ] Opening date / announcement wording, if to be published
 - [ ] Final approval of the Privacy Notice and the consent checkbox wording (see section 5)

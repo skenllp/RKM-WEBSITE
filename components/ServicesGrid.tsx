@@ -45,11 +45,11 @@ export function ServicesGrid({
               {showDetail ? null : (
                 <ArrowRight width={18} height={18} className="shrink-0 text-navy/40 sm:hidden" />
               )}
-              <p className={cn("mt-3 text-[0.97rem] leading-relaxed text-slate-600", !showDetail && "hidden sm:block")}>
+              <p className={cn("mt-3 text-base leading-relaxed text-slate-600", !showDetail && "hidden sm:block")}>
                 {s.summary}
               </p>
               {showDetail ? (
-                <p className="mt-3 text-[0.97rem] leading-relaxed text-slate-600">{s.detail}</p>
+                <p className="mt-3 text-base leading-relaxed text-slate-600">{s.detail}</p>
               ) : null}
             </article>
           </li>
@@ -63,7 +63,7 @@ export function ServicesGrid({
               Not sure which service you need?
             </span>
             <span>
-              <span className="block text-[0.95rem] text-white/80">
+              <span className="block text-base text-white/80">
                 {site.bookingOpen
                   ? "Send an appointment request and we will guide you."
                   : "We will guide you when we open. Follow along for the date."}

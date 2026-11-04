@@ -62,7 +62,7 @@ export default function OpticalCarePage() {
                   <li key={o.title} className="py-5">
                     <h3 className="text-[1.3rem]">{o.title}</h3>
                     {o.description ? (
-                      <p className="mt-1 text-[0.97rem] text-slate-600">{o.description}</p>
+                      <p className="mt-1 text-base text-slate-600">{o.description}</p>
                     ) : null}
                   </li>
                 ))}
@@ -97,7 +97,7 @@ export default function OpticalCarePage() {
             ))}
           </ul>
 
-          <Reveal className="mt-10 max-w-3xl rounded-2xl bg-ivory p-6 text-[0.95rem] text-slate-600">
+          <Reveal className="mt-10 max-w-3xl rounded-2xl bg-ivory p-6 text-base text-slate-600">
             <p>
               <strong className="text-navy">About the visualisations:</strong> signage, fittings and any
               eyewear brand names shown in these images are part of the architectural design and do not

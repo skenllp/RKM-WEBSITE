@@ -83,17 +83,32 @@ export const site = {
   bookingOpen: process.env.NEXT_PUBLIC_BOOKING_OPEN === "true",
 };
 
-/** `short` is the compact label used in the desktop header. */
-export const navigation = [
+export type NavItem = {
+  label: string;
+  /** Compact label used in the desktop header. */
+  short: string;
+  href: string;
+  /** Pages not in the menu that highlight this item. */
+  also?: string[];
+};
+
+/** Main menu, kept short. Optical Care and News are reached from the pages they sit under. */
+export const navigation: NavItem[] = [
   { label: "Home", short: "Home", href: "/" },
-  { label: "About Us", short: "About", href: "/about" },
-  { label: "Eye Care Services", short: "Services", href: "/services" },
+  { label: "Eye Care Services", short: "Services", href: "/services", also: ["/optical-care"] },
   { label: "Our Doctor", short: "Our Doctor", href: "/doctor" },
-  { label: "Optical Care", short: "Optical", href: "/optical-care" },
   { label: "Facilities", short: "Facilities", href: "/facilities" },
-  { label: "News & Updates", short: "News", href: "/news" },
+  { label: "About Us", short: "About", href: "/about", also: ["/news"] },
   { label: "Contact Us", short: "Contact", href: "/contact" },
-] as const;
+];
+
+/** The footer lists every page, including those not in the main menu. */
+export const footerNavigation: { label: string; href: string }[] = [
+  ...navigation,
+  { label: "Optical Care", href: "/optical-care" },
+  { label: "News & Updates", href: "/news" },
+  { label: "Privacy Notice", href: "/privacy" },
+];
 
 export const APPOINTMENT_HREF = "/contact#appointment";
 

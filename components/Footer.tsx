@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { navigation, site, telHref } from "@/content/site";
+import { footerNavigation, site, telHref } from "@/content/site";
 import { Logo } from "./Logo";
 import { ClockIcon, InstagramIcon, MailIcon, PhoneIcon, PinIcon } from "./Icons";
 
@@ -10,7 +10,7 @@ export function Footer() {
       <div className="container-x grid gap-12 py-16 md:grid-cols-12 lg:py-24">
         <div className="md:col-span-5">
           <Logo variant="white" withTagline height={64} />
-          <p className="mt-6 max-w-sm text-[0.95rem] leading-relaxed text-white/75">
+          <p className="mt-6 max-w-sm text-base leading-relaxed text-white/75">
             {site.fullName}. Compassionate, ethical and patient-focused eye care, founded in loving
             memory of Radhakrishnan.
           </p>
@@ -28,8 +28,8 @@ export function Footer() {
 
         <nav aria-label="Footer" className="md:col-span-3">
           <h2 className="label font-sans !text-aqua">Explore</h2>
-          <ul className="mt-4 grid text-[0.95rem]">
-            {navigation.map((item) => (
+          <ul className="mt-4 grid text-base">
+            {footerNavigation.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
@@ -39,21 +39,13 @@ export function Footer() {
                 </Link>
               </li>
             ))}
-            <li>
-              <Link
-                href="/privacy"
-                className="inline-block py-1.5 text-white/80 transition hover:text-white hover:underline"
-              >
-                Privacy Notice
-              </Link>
-            </li>
           </ul>
         </nav>
 
         <div className="md:col-span-4">
           <h2 className="label font-sans !text-aqua">Contact</h2>
           {/* Details appear here as soon as they are filled in, in content/site.ts. */}
-          <ul className="mt-5 grid gap-4 text-[0.95rem] text-white/80">
+          <ul className="mt-5 grid gap-4 text-base text-white/80">
             <li className="flex gap-3">
               <PinIcon className="mt-0.5 shrink-0 text-aqua" width={20} height={20} />
               <span>

@@ -37,7 +37,7 @@ export function CoreValues() {
           {coreValues.map((v) => (
             <li key={v.title} className="border-t border-line pt-5">
               <h3 className="text-[1.3rem]">{v.title}</h3>
-              <p className="mt-2 text-[0.97rem] leading-relaxed text-slate-600">{v.text}</p>
+              <p className="mt-2 text-base leading-relaxed text-slate-600">{v.text}</p>
             </li>
           ))}
         </ul>

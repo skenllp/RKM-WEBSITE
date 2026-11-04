@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   galleryCategories,
   galleryImages,
+  getImage,
   type GalleryCategory,
   type GalleryImage,
 } from "@/content/gallery";
@@ -15,12 +16,13 @@ type Filter = "All" | GalleryCategory;
 
 export function GalleryExplorer({
   initialFilter = "All",
-  limit,
+  only,
   showFilters = true,
   preview = false,
 }: {
   initialFilter?: Filter;
-  limit?: number;
+  /** Show just these images, in this order. */
+  only?: GalleryImage["id"][];
   showFilters?: boolean;
   /** Home page layout: large first image, and a swipeable row on phones. */
   preview?: boolean;
@@ -31,10 +33,9 @@ export function GalleryExplorer({
   const lastTrigger = useRef<HTMLElement | null>(null);
 
   const items = useMemo(() => {
-    const list =
-      filter === "All" ? galleryImages : galleryImages.filter((g) => g.categories.includes(filter));
-    return typeof limit === "number" ? list.slice(0, limit) : list;
-  }, [filter, limit]);
+    if (only) return only.map(getImage);
+    return filter === "All" ? galleryImages : galleryImages.filter((g) => g.categories.includes(filter));
+  }, [filter, only]);
 
   const open = useCallback((index: number, trigger: HTMLElement) => {
     lastTrigger.current = trigger;
@@ -149,7 +150,7 @@ export function GalleryExplorer({
                 </span>
                 <span className="flex items-baseline justify-between gap-3 bg-navy px-4 py-3 text-white sm:absolute sm:inset-x-0 sm:bottom-0 sm:bg-transparent sm:bg-gradient-to-t sm:from-navy-900/85 sm:to-transparent sm:p-4 sm:pt-14">
                   <span className="text-sm font-semibold">{g.caption}</span>
-                  <span className="shrink-0 text-[0.68rem] font-semibold uppercase tracking-wider text-white/85">
+                  <span className="shrink-0 text-xs font-semibold uppercase tracking-wider text-white/85">
                     Visualisation
                   </span>
                 </span>

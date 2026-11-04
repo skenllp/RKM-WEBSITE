@@ -13,7 +13,7 @@ export function Hero() {
   const img = getImage("exterior-front");
 
   return (
-    <section aria-labelledby="hero-heading">
+    <section aria-labelledby="hero-heading" className="pb-10 lg:pb-14">
       <div className="relative isolate overflow-hidden bg-navy text-white">
         <div
           aria-hidden="true"
@@ -21,7 +21,7 @@ export function Hero() {
         />
         <div className="container-x pb-28 pt-14 sm:pb-36 sm:pt-20 lg:pb-44 xl:grid xl:grid-cols-[1.35fr_1fr] xl:items-end xl:gap-12">
           <div>
-            <p className="inline-flex items-center gap-2.5 text-[0.74rem] font-bold uppercase tracking-[0.2em] text-white/85">
+            <p className="inline-flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.2em] text-white/85">
               <span aria-hidden="true" className="size-1.5 rounded-full bg-aqua" />
               {site.openingStatus} · {site.town}
             </p>
@@ -59,7 +59,7 @@ export function Hero() {
             alt={img.alt}
             width={img.width}
             height={img.height}
-            priority
+            preload
             sizes="(min-width: 1216px) 1152px, 94vw"
             placeholder="blur"
             blurDataURL={img.blurDataURL}

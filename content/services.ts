@@ -1,5 +1,8 @@
 /**
- * The seven eye-care service lines supplied by the clinic.
+ * The seven eye-care service lines supplied by the clinic, named in plain language.
+ * The clinic's original names: General Ophthalmology, Paediatric Eye Care, Cataract
+ * Evaluation and Management, Corneal Diseases, Glaucoma Evaluation and Management,
+ * Uvea, Medical Retina. These also remain on the doctor profile.
  *
  * Descriptions are deliberately general, explaining what the specialty area
  * covers. They do not claim any specific treatment, equipment or surgical
@@ -27,7 +30,7 @@ export type Service = {
 export const services: Service[] = [
   {
     slug: "general-ophthalmology",
-    title: "General Ophthalmology",
+    title: "General Eye Check-ups",
     icon: "eye",
     summary:
       "Comprehensive eye examinations and care for common eye concerns, from changes in vision to irritation and strain.",
@@ -36,7 +39,7 @@ export const services: Service[] = [
   },
   {
     slug: "paediatric-eye-care",
-    title: "Paediatric Eye Care",
+    title: "Children’s Eye Care",
     icon: "child",
     summary:
       "Eye assessments for children, with attention to how vision develops and how it affects learning and everyday life.",
@@ -45,7 +48,7 @@ export const services: Service[] = [
   },
   {
     slug: "cataract-evaluation-and-management",
-    title: "Cataract Evaluation and Management",
+    title: "Cataract Care",
     icon: "cataract",
     summary:
       "Assessment of clouding of the eye’s natural lens, with clear guidance on the options suited to each patient.",
@@ -54,7 +57,7 @@ export const services: Service[] = [
   },
   {
     slug: "corneal-diseases",
-    title: "Corneal Diseases",
+    title: "Cornea Problems",
     icon: "cornea",
     summary:
       "Evaluation and care of conditions affecting the cornea, the clear front surface of the eye.",
@@ -63,7 +66,7 @@ export const services: Service[] = [
   },
   {
     slug: "glaucoma-evaluation-and-management",
-    title: "Glaucoma Evaluation and Management",
+    title: "Glaucoma Care",
     icon: "glaucoma",
     summary:
       "Evaluation and long-term monitoring of glaucoma, a group of conditions that can damage the optic nerve.",
@@ -72,7 +75,7 @@ export const services: Service[] = [
   },
   {
     slug: "uvea",
-    title: "Uvea",
+    title: "Eye Inflammation (Uvea)",
     icon: "uvea",
     summary:
       "Evaluation and management of inflammation and other conditions affecting the uvea, the middle layer of the eye.",
@@ -81,7 +84,7 @@ export const services: Service[] = [
   },
   {
     slug: "medical-retina",
-    title: "Medical Retina",
+    title: "Retina Care",
     icon: "retina",
     summary:
       "Evaluation and medical management of conditions affecting the retina, the light-sensitive layer at the back of the eye.",

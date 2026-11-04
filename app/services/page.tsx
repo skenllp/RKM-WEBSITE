@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { buildMetadata } from "@/lib/seo";
+import { ArrowRight } from "@/components/Icons";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbJsonLd } from "@/lib/structured-data";
 import { site } from "@/content/site";
@@ -32,7 +34,13 @@ export default function ServicesPage() {
             </Reveal>
           ) : null}
           <ServicesGrid showDetail headingLevel="h2" />
-          <Reveal className="mt-10 max-w-3xl rounded-2xl bg-ivory p-6 text-[0.95rem] text-slate-600">
+          <Reveal className="mt-8">
+            <Link href="/optical-care" className="btn btn-outline">
+              Looking for eyewear? See Optical Care
+              <ArrowRight width={18} height={18} />
+            </Link>
+          </Reveal>
+          <Reveal className="mt-10 max-w-3xl rounded-2xl bg-ivory p-6 text-base text-slate-600">
             <p>
               <strong className="text-navy">Please note:</strong> the information on this website is
               general and is not a substitute for an eye examination or medical advice. If you have

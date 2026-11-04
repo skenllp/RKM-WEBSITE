@@ -64,7 +64,7 @@ export function NewsCard({
             {post.malayalam}
           </p>
         ) : null}
-        <p className="mt-3 flex-1 text-[0.97rem] leading-relaxed text-slate-600">{post.excerpt}</p>
+        <p className="mt-3 flex-1 text-base leading-relaxed text-slate-600">{post.excerpt}</p>
         <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-navy">
           Read update
           <ArrowRight width={18} height={18} className="transition group-hover:translate-x-1" />

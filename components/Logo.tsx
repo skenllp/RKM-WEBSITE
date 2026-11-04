@@ -44,7 +44,7 @@ export function Logo({
       alt=""
       width={dims.width}
       height={dims.height}
-      priority={priority}
+      preload={priority}
       sizes={`${width}px`}
       style={{ height, width }}
     />

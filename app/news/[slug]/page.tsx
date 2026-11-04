@@ -67,7 +67,7 @@ export default async function NewsPostPage({ params }: { params: Promise<Params>
               alt={post.image.alt}
               width={post.image.width}
               height={post.image.height}
-              priority
+              preload
               sizes="(min-width: 768px) 720px, 94vw"
               className="h-auto w-full rounded-2xl"
             />

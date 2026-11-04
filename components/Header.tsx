@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { APPOINTMENT_HREF, cta, navigation, site, telHref } from "@/content/site";
+import { APPOINTMENT_HREF, cta, navigation, site, telHref, type NavItem } from "@/content/site";
 import { Logo } from "./Logo";
 import {
   ArrowRight,
@@ -15,8 +15,9 @@ import {
 } from "./Icons";
 import { cn } from "@/lib/utils";
 
-function isActive(pathname: string, href: string) {
-  return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
+function isActive(pathname: string, item: NavItem) {
+  if (item.href === "/") return pathname === "/";
+  return [item.href, ...(item.also ?? [])].some((h) => pathname === h || pathname.startsWith(`${h}/`));
 }
 
 export function Header() {
@@ -110,14 +111,14 @@ export function Header() {
           <nav aria-label="Main" className="hidden lg:block">
             <ul className="flex items-center gap-1">
               {navigation.slice(1).map((item) => {
-                const active = isActive(pathname, item.href);
+                const active = isActive(pathname, item);
                 return (
                   <li key={item.href}>
                     <Link
                       href={item.href}
                       aria-current={active ? "page" : undefined}
                       className={cn(
-                        "relative whitespace-nowrap px-2.5 py-2 text-[0.9rem] font-medium transition-colors xl:px-3.5",
+                        "relative whitespace-nowrap px-2.5 py-2 text-sm font-medium transition-colors xl:px-3.5",
                         active ? "text-navy" : "text-slate-600 hover:text-navy",
                         "after:absolute after:inset-x-2.5 after:bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-teal-700 after:transition-transform xl:after:inset-x-3.5",
                         active ? "after:scale-x-100" : "hover:after:scale-x-100",
@@ -179,7 +180,7 @@ export function Header() {
         <nav aria-label="Mobile" className="container-x flex-1 py-6">
           <ul className="mx-auto flex max-w-md flex-col">
             {navigation.map((item, i) => {
-              const active = isActive(pathname, item.href);
+              const active = isActive(pathname, item);
               return (
                 <li
                   key={item.href}
