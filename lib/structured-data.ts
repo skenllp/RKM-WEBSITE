@@ -1,5 +1,5 @@
 import { site } from "@/content/site";
-import { doctor } from "@/content/doctor";
+import { doctors } from "@/content/doctor";
 import type { NewsPost } from "@/content/news";
 
 const DAY_CODES: Record<string, string> = {
@@ -85,7 +85,7 @@ export function clinicJsonLd() {
     ...(c.email ? { email: c.email } : {}),
     ...(c.mapsUrl ? { hasMap: c.mapsUrl } : {}),
     ...(hoursSpec.length ? { openingHoursSpecification: hoursSpec } : {}),
-    employee: { "@id": `${site.url}/doctor#physician` },
+    employee: doctors.map((d) => ({ "@id": `${site.url}/doctor#${d.slug}` })),
   };
 }
 
@@ -103,15 +103,15 @@ export function websiteJsonLd() {
 }
 
 export function physicianJsonLd() {
-  return {
+  return doctors.map((doctor) => ({
     "@context": "https://schema.org",
     "@type": "Physician",
-    "@id": `${site.url}/doctor#physician`,
+    "@id": `${site.url}/doctor#${doctor.slug}`,
     name: doctor.name,
     jobTitle: doctor.designation,
     medicalSpecialty: "Ophthalmology",
     identifier: doctor.registration,
-    url: `${site.url}/doctor`,
+    url: `${site.url}/doctor#${doctor.slug}`,
     worksFor: { "@id": `${site.url}/#clinic` },
     ...(doctor.qualificationDetails
       ? {
@@ -121,7 +121,7 @@ export function physicianJsonLd() {
         }
       : {}),
     ...(doctor.photo ? { image: `${site.url}${doctor.photo}` } : {}),
-  };
+  }));
 }
 
 /** Breadcrumb trail for inner pages, e.g. breadcrumbJsonLd([{ name: "About Us", path: "/about" }]). Home is added automatically. */

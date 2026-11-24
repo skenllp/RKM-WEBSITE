@@ -12,7 +12,7 @@ export function Footer() {
           <Logo variant="white" withTagline height={64} />
           <p className="mt-6 max-w-sm text-base leading-relaxed text-white/75">
             {site.fullName}. Compassionate, ethical and patient-focused eye care, founded in loving
-            memory of Radhakrishnan.
+            memory of Late. K.Radhakrishnan Master.
           </p>
           <a
             href={site.instagram.url}

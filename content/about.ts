@@ -11,7 +11,7 @@ export const mission =
   "To deliver ethical, compassionate, high-quality eye care - always putting patients first.";
 
 export const foundation =
-  "Founded in loving memory of Radhakrishnan, RKM carries a family’s shared commitment to protecting sight and serving people with integrity.";
+  "Founded in loving memory of Late. K.Radhakrishnan Master, RKM carries a family’s shared commitment to protecting sight and serving people with integrity.";
 
 export const coreValues = [
   {
@@ -47,7 +47,7 @@ export const promise =
 export const intro = {
   heading: "Care rooted in memory, guided by integrity",
   paragraphs: [
-    "RKM stands for Radhakrishnan Memorial Eye Care, founded in loving memory of Radhakrishnan. It carries a family’s shared commitment to protecting sight and serving people with integrity.",
+    "RKM stands for Radhakrishnan Memorial Eye Care, founded in loving memory of Late. K.Radhakrishnan Master. It carries a family’s shared commitment to protecting sight and serving people with integrity.",
     "Everything we do is shaped by four commitments: clinical excellence, affordability, integrity and compassionate patient care. Our aim is simple: that better vision should be within everyone’s reach.",
   ],
   commitments: [

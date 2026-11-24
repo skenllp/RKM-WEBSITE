@@ -18,7 +18,7 @@ import {
 
 export const metadata = buildMetadata({
   title: "About Us",
-  description: `About ${site.fullName}, an eye clinic and optical showroom coming soon to Parappanangadi, Kerala. Founded in loving memory of Radhakrishnan on clinical excellence, affordability, integrity and compassion.`,
+  description: `About ${site.fullName}, an eye clinic and optical showroom coming soon to Parappanangadi, Kerala. Founded in loving memory of Late. K.Radhakrishnan Master on clinical excellence, affordability, integrity and compassion.`,
   path: "/about",
 });
 
@@ -31,7 +31,7 @@ export default function AboutPage() {
       <PageHero
         eyebrow="About Us"
         title="Radhakrishnan Memorial Eye Care"
-        intro="Founded in loving memory of Radhakrishnan, RKM carries a family’s shared commitment to protecting sight and serving people with integrity."
+        intro="Founded in loving memory of Late. K.Radhakrishnan Master, RKM carries a family’s shared commitment to protecting sight and serving people with integrity."
         image={{ src: hero.src, blurDataURL: hero.blurDataURL }}
       />
 

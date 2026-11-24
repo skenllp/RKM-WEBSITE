@@ -107,10 +107,10 @@ export function Header() {
             <Logo priority height={42} />
           </div>
 
-          {/* Desktop navigation (the logo links home, so "Home" is not repeated here) */}
+          {/* Desktop navigation */}
           <nav aria-label="Main" className="hidden lg:block">
             <ul className="flex items-center gap-1">
-              {navigation.slice(1).map((item) => {
+              {navigation.map((item) => {
                 const active = isActive(pathname, item);
                 return (
                   <li key={item.href}>

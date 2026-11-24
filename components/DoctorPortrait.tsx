@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { doctor } from "@/content/doctor";
+import { doctor as defaultDoctor, type Doctor } from "@/content/doctor";
 import { DraftNote } from "./DraftNote";
 import { cn } from "@/lib/utils";
 
@@ -7,7 +7,15 @@ import { cn } from "@/lib/utils";
  * Shows the approved portrait when `doctor.photo` is set; otherwise a neutral
  * placeholder (no stock or generated photograph is used).
  */
-export function DoctorPortrait({ className, priority = false }: { className?: string; priority?: boolean }) {
+export function DoctorPortrait({
+  className,
+  priority = false,
+  doctor = defaultDoctor,
+}: {
+  className?: string;
+  priority?: boolean;
+  doctor?: Doctor;
+}) {
   return (
     <div
       className={cn(

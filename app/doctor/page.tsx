@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { buildMetadata } from "@/lib/seo";
-import { doctor } from "@/content/doctor";
+import { doctors, type Doctor } from "@/content/doctor";
 import { APPOINTMENT_HREF, cta, site } from "@/content/site";
 import { physicianJsonLd, breadcrumbJsonLd } from "@/lib/structured-data";
 import { JsonLd } from "@/components/JsonLd";
@@ -11,8 +11,8 @@ import { Reveal } from "@/components/Reveal";
 import { CalendarIcon, ShieldIcon } from "@/components/Icons";
 
 export const metadata = buildMetadata({
-  title: `${doctor.name}, Ophthalmologist`,
-  description: `${doctor.name} (${doctor.qualifications}), ${doctor.designation}. ${doctor.registration}. Eye care for Parappanangadi and Malappuram at ${site.name}.`,
+  title: "Our Doctors, Ophthalmologists",
+  description: `${doctors.map((d) => `${d.name} (${d.qualifications})`).join(" and ")}, Consultant Ophthalmologists and Surgeons. Eye care for Parappanangadi and Malappuram at ${site.name}.`,
   path: "/doctor",
 });
 
@@ -24,20 +24,15 @@ const H2 = "text-[clamp(1.7rem,3vw,2.3rem)]";
 /** Hairline-separated list for plain facts, so they do not read as clickable cards. */
 const LIST = "mt-5 divide-y divide-line border-y border-line";
 
-export default function DoctorPage() {
+function DoctorProfile({ doctor, priority }: { doctor: Doctor; priority?: boolean }) {
   const { biography, qualificationDetails, clinicalInterests, awards } = doctor;
   return (
-    <>
-      <JsonLd data={breadcrumbJsonLd([{ name: "Our Doctor", path: "/doctor" }])} />
-      <JsonLd data={physicianJsonLd()} />
-      <PageHero eyebrow="Our Doctor" title={doctor.name} intro={doctor.designation} />
-
-      <section className="section">
+      <section id={doctor.slug} className="section scroll-mt-24">
         <div className="container-x grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24">
           {/* Profile card */}
           <div className="lg:sticky lg:top-28 lg:self-start">
             <Reveal className="mx-auto max-w-sm lg:max-w-none">
-              <DoctorPortrait priority />
+              <DoctorPortrait doctor={doctor} priority={priority} />
               <dl className="mt-6 grid gap-4 text-base">
                 <div>
                   <dt className="label">Qualifications</dt>
@@ -140,9 +135,26 @@ export default function DoctorPage() {
           </div>
         </div>
       </section>
+  );
+}
 
+export default function DoctorPage() {
+  return (
+    <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Our Doctors", path: "/doctor" }])} />
+      {physicianJsonLd().map((d) => (
+        <JsonLd key={d["@id"]} data={d} />
+      ))}
+      <PageHero
+        eyebrow="Our Doctors"
+        title="Meet our ophthalmologists"
+        intro="Consultant Ophthalmologists and Surgeons committed to ethical, compassionate and patient-centred eye care."
+      />
+      {doctors.map((doctor, i) => (
+        <DoctorProfile key={doctor.slug} doctor={doctor} priority={i === 0} />
+      ))}
       <CtaBand
-        title={site.bookingOpen ? `Book a consultation with ${doctor.name}` : `Meet ${doctor.name} when we open`}
+        title={site.bookingOpen ? "Book a consultation" : "Meet our doctors when we open"}
         text="Send an appointment request and the clinic will contact you to confirm a time."
       />
     </>

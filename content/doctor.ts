@@ -11,7 +11,7 @@
  * To replace it, overwrite that file (portrait or square, at least 1000 px wide).
  */
 
-export const doctor = {
+const chandana = {
   slug: "dr-chandana-prabhakar",
   name: "Dr. Chandana Prabhakar",
   qualifications: "MBBS, DO (NBE)",
@@ -52,3 +52,42 @@ export const doctor = {
     "IMA MEDTECH IDEATHON 2025 Third runner up Award",
   ] as string[] | null,
 };
+
+const lakshmi = {
+  slug: "dr-lakshmi-a-menon",
+  name: "Dr. Lakshmi A. Menon",
+  qualifications: "MBBS, DNB",
+  designation: "Consultant Ophthalmologist and Surgeon",
+  registration: "TCMC Registration No: 79759",
+
+  /** Portrait supplied by the clinic. Replace the file (same name) to change it. */
+  photo: "/images/doctor/dr-lakshmi.webp" as string | null,
+  photoAlt: "Dr. Lakshmi A. Menon in a navy blue embroidered top.",
+
+  biography: [
+    "Dr. Lakshmi A. Menon is a Consultant Ophthalmologist and Surgeon with a solid foundation in clinical ophthalmology and a commitment to delivering comprehensive eye care. She completed her MBBS from Government Medical College, Kannur, in 2019, followed by her postgraduate training in Ophthalmology at Dr. Agarwal’s Eye Hospital, Chennai.",
+    "She has qualified Part A and B of the FICO examinations (Fellow of the International Council of Ophthalmology), reflecting her dedication to professional excellence and continued learning. She is committed to providing ethical, compassionate, and patient-centred eye care.",
+  ] as string[] | null,
+  qualificationDetails: [
+    { title: "MBBS (2019)", institution: "Government Medical College, Kannur, Kerala" },
+    { title: "DNB Ophthalmology", institution: "Dr. Agarwal’s Eye Hospital, Chennai" },
+    { title: "FICO Part A and B qualified", institution: "International Council of Ophthalmology" },
+  ] as { title: string; institution?: string }[] | null,
+  clinicalInterests: [
+    "General Ophthalmology",
+    "Paediatric Ophthalmology",
+    "Cataract",
+    "Glaucoma",
+    "Medical Retina",
+    "Uvea",
+    "Cornea",
+  ] as string[] | null,
+  awards: null as string[] | null,
+};
+
+export type Doctor = typeof chandana | typeof lakshmi;
+
+export const doctors: Doctor[] = [chandana, lakshmi];
+
+/** First doctor, kept for code that expects a single profile. */
+export const doctor = chandana;

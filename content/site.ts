@@ -96,7 +96,7 @@ export type NavItem = {
 export const navigation: NavItem[] = [
   { label: "Home", short: "Home", href: "/" },
   { label: "Eye Care Services", short: "Services", href: "/services", also: ["/optical-care"] },
-  { label: "Our Doctor", short: "Our Doctor", href: "/doctor" },
+  { label: "Our Doctors", short: "Our Doctors", href: "/doctor" },
   { label: "Facilities", short: "Facilities", href: "/facilities" },
   { label: "About Us", short: "About", href: "/about", also: ["/news"] },
   { label: "Contact Us", short: "Contact", href: "/contact" },
