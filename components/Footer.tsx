@@ -88,6 +88,18 @@ export function Footer() {
           <p className="md:text-right">
             Clinic images on this site are architectural visualisations, not photographs of the finished clinic.
           </p>
+          <p>
+            Developed by{" "}
+            <a
+              href="https://sahilmuhd.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-white underline-offset-4 hover:underline"
+            >
+              Sahil
+              <span className="sr-only"> (opens in a new tab)</span>
+            </a>
+          </p>
         </div>
       </div>
     </footer>
