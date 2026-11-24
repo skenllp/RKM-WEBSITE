@@ -1,7 +1,8 @@
 /**
- * A template re-mounts on every navigation, so this gives each page a gentle
- * fade-and-rise transition. It is switched off for reduced-motion users.
+ * Pages swap instantly. A whole-page fade made the screen blink on every
+ * navigation (especially on phones, with the menu closing at the same time).
+ * Content still fades in gently as it scrolls into view (see Reveal).
  */
 export default function Template({ children }: { children: React.ReactNode }) {
-  return <div className="page-enter">{children}</div>;
+  return <>{children}</>;
 }

@@ -17,7 +17,7 @@ export function DoctorFeature() {
         />
         <div className="mt-10 grid gap-12 md:grid-cols-2 lg:gap-16">
           {doctors.map((doctor, i) => (
-            <Reveal key={doctor.slug} delay={i * 100}>
+            <Reveal key={doctor.slug} delay={i * 100} className="mx-auto w-full max-w-sm md:max-w-none">
               <DoctorPortrait doctor={doctor} />
               <h3 className="mt-6 text-[clamp(1.4rem,2.6vw,1.8rem)]">{doctor.name}</h3>
               <p className="mt-2 text-lg font-medium text-teal-700">{doctor.designation}</p>

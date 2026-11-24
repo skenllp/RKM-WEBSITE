@@ -37,6 +37,15 @@
     scroll-behavior: smooth;
     scroll-padding-top: 5.5rem;
     -webkit-text-size-adjust: 100%;
+    overflow-x: clip;
+  }
+  a,
+  button,
+  select,
+  input,
+  textarea {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
   body {
     font-family: var(--font-sans);
@@ -91,7 +100,12 @@
   }
 
   .section {
-    padding-block: 5rem;
+    padding-block: 3.75rem;
+  }
+  @media (min-width: 640px) {
+    .section {
+      padding-block: 5rem;
+    }
   }
   @media (min-width: 1024px) {
     .section {
@@ -261,6 +275,9 @@
   .reveal.is-visible {
     opacity: 1;
     transform: none;
+  }
+  .reveal.reveal-instant {
+    transition: none;
   }
 }
 

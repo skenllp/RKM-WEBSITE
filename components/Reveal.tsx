@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type ElementType, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, type ElementType, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -21,9 +21,20 @@ export function Reveal({
 }) {
   const ref = useRef<HTMLElement | null>(null);
 
+  // Content already on screen when the page appears is shown straight away (no hidden-then-fade blink).
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    if (r.top < window.innerHeight && r.bottom > 0) {
+      el.classList.add("is-visible", "reveal-instant");
+    }
+  }, []);
+
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    if (el.classList.contains("is-visible")) return;
     if (typeof IntersectionObserver === "undefined") {
       el.classList.add("is-visible");
       return;
