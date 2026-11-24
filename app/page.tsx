@@ -62,7 +62,6 @@ export default function HomePage() {
               id="facilities-heading"
               eyebrow="Facilities"
               title="A first look at the clinic"
-              intro="Architectural visualisations of the clinic. The finished spaces may differ."
             />
             <Reveal>
               <Link href="/facilities" className="btn btn-outline">

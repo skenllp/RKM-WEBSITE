@@ -85,9 +85,6 @@ export function Footer() {
       <div className="border-t border-white/10">
         <div className="container-x flex flex-col gap-2 py-6 pb-24 text-sm text-white/65 md:flex-row md:items-center md:justify-between md:pb-6">
           <p>© {new Date().getFullYear()} {site.fullName}. All rights reserved.</p>
-          <p className="md:text-right">
-            Clinic images on this site are architectural visualisations, not photographs of the finished clinic.
-          </p>
           <p>
             Developed by{" "}
             <a

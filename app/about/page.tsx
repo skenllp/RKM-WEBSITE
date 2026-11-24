@@ -68,7 +68,6 @@ export default function AboutPage() {
                 className="aspect-[5/4] w-full object-cover"
               />
             </div>
-            <p className="mt-3 text-sm text-slate-600">Architectural visualisation of the waiting area.</p>
           </Reveal>
         </div>
       </section>

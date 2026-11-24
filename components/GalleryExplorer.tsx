@@ -150,9 +150,6 @@ export function GalleryExplorer({
                 </span>
                 <span className="flex items-baseline justify-between gap-3 bg-navy px-4 py-3 text-white sm:absolute sm:inset-x-0 sm:bottom-0 sm:bg-transparent sm:bg-gradient-to-t sm:from-navy-900/85 sm:to-transparent sm:p-4 sm:pt-14">
                   <span className="text-sm font-semibold">{g.caption}</span>
-                  <span className="shrink-0 text-xs font-semibold uppercase tracking-wider text-white/85">
-                    Visualisation
-                  </span>
                 </span>
               </button>
             </li>
@@ -182,9 +179,6 @@ export function GalleryExplorer({
               />
               <figcaption className="flex flex-wrap items-center justify-between gap-2 px-5 py-4 text-sm">
                 <span className="font-semibold text-navy">{current.caption}</span>
-                <span className="text-slate-600">
-                  Architectural visualisation. The finished clinic may differ.
-                </span>
               </figcaption>
             </div>
 

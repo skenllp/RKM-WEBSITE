@@ -45,9 +45,6 @@ export default function OpticalCarePage() {
                 className="h-auto w-full"
               />
             </Reveal>
-            <figcaption className="mt-3 text-sm text-slate-600">
-              Architectural visualisation of the RKM Optical Care showroom. The finished showroom may differ.
-            </figcaption>
           </figure>
 
           <div className="mt-16 grid items-center gap-10 lg:mt-24 lg:grid-cols-[1fr_1fr] lg:gap-24">
@@ -88,9 +85,7 @@ export default function OpticalCarePage() {
                         className="aspect-[4/3] w-full object-cover"
                       />
                     </div>
-                    <figcaption className="mt-3 text-sm text-slate-600">
-                      {g.caption}. Architectural visualisation.
-                    </figcaption>
+                    <figcaption className="mt-3 text-sm text-slate-600">{g.caption}</figcaption>
                   </figure>
                 </Reveal>
               </li>
