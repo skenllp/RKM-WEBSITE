@@ -22,6 +22,11 @@ const nextConfig: NextConfig = {
           process.env.APPOINTMENT_FROM_EMAIL,
       ),
     ),
+    // Spam check (Cloudflare Turnstile) switches on only when both keys are set.
+    NEXT_PUBLIC_TURNSTILE_SITE_KEY:
+      process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && process.env.TURNSTILE_SECRET_KEY
+        ? process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+        : "",
   },
   images: {
     formats: ["image/avif", "image/webp"],

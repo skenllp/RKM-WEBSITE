@@ -37,6 +37,8 @@ the wording is always "request", "not a confirmed booking".
 3. **Redeploy** so the new variables take effect.
 4. **Locally:** `cp .env.example .env.local`, fill in the values, run `npm run dev`. `.env.local` is git-ignored; never commit keys.
 
+**Spam check (recommended before going public):** the form supports [Cloudflare Turnstile](https://www.cloudflare.com/products/turnstile/), which is free and usually invisible to real visitors. In Cloudflare, create a Turnstile widget for your domain (mode "Managed"), then add `NEXT_PUBLIC_TURNSTILE_SITE_KEY` (site key) and `TURNSTILE_SECRET_KEY` (secret key, keep it Secret) in Vercel and redeploy. It switches on only when both are set; requests without a valid check are rejected and nothing is emailed.
+
 Key safety: `RESEND_API_KEY`, `APPOINTMENT_TO_EMAIL` and `APPOINTMENT_FROM_EMAIL` are read only inside `app/api/appointments/route.ts` on the server. They have no `NEXT_PUBLIC_` prefix and are not in the browser bundle (verified). Do not add that prefix.
 
 Checks in the endpoint: same-origin only, JSON only, 8 KB limit, server-side validation (name, Indian/international phone, date within 90 days in India time, listed time and reason, consent), honeypot, rate limits, HTML-escaped email. Nothing is stored or logged about the patient; provider errors (status and message only) are logged to Vercel to help diagnose setup problems.

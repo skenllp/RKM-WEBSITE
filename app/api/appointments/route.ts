@@ -46,6 +46,27 @@ function overLimit(kind: keyof typeof buckets, ip: string, max: number) {
   return false;
 }
 
+/** Cloudflare Turnstile check. Skipped (returns true) until both keys are configured. */
+async function passesSpamCheck(token: unknown, ip: string) {
+  const secret = process.env.TURNSTILE_SECRET_KEY;
+  if (!secret || !process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) return true;
+  if (typeof token !== "string" || !token || token.length > 2048) return false;
+  try {
+    const body = new URLSearchParams({ secret, response: token });
+    if (ip !== "unknown") body.set("remoteip", ip);
+    const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "POST",
+      body,
+      signal: AbortSignal.timeout(8_000),
+    });
+    const data = (await res.json()) as { success?: boolean };
+    return data.success === true;
+  } catch {
+    console.error("[appointments] spam check could not be reached");
+    return false;
+  }
+}
+
 function escapeHtml(s: string) {
   return s
     .replace(/&/g, "&amp;")
@@ -123,6 +144,8 @@ export async function POST(request: Request) {
 
   const errors = validateAppointment(input);
   if (Object.keys(errors).length > 0) return json({ code: "invalid", errors }, 422);
+
+  if (!(await passesSpamCheck(raw.turnstileToken, ip))) return json({ code: "spam_check_failed" }, 403);
 
   if (overLimit("sends", ip, MAX_SENDS)) return json({ code: "rate_limited" }, 429, { "Retry-After": "600" });
 

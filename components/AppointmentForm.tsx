@@ -16,7 +16,20 @@ import {
 import { CheckIcon } from "./Icons";
 import { cn } from "@/lib/utils";
 
-type Status = "idle" | "submitting" | "success" | "unavailable" | "rate_limited" | "error";
+type Status = "idle" | "submitting" | "success" | "unavailable" | "rate_limited" | "spam_check" | "error";
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
+
+type TurnstileApi = {
+  render: (el: HTMLElement, opts: Record<string, unknown>) => string;
+  reset: (id?: string) => void;
+  remove: (id?: string) => void;
+};
+declare global {
+  interface Window {
+    turnstile?: TurnstileApi;
+  }
+}
 
 const EMPTY: AppointmentInput = {
   name: "",
@@ -49,6 +62,47 @@ export function AppointmentForm() {
   const [sentName, setSentName] = useState("");
   const summaryRef = useRef<HTMLDivElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
+  const [token, setToken] = useState("");
+  const widgetEl = useRef<HTMLDivElement>(null);
+  const widgetId = useRef<string | null>(null);
+
+  // Cloudflare Turnstile spam check (only when configured). Usually invisible to real visitors.
+  useEffect(() => {
+    if (!TURNSTILE_SITE_KEY || status === "success") return;
+    let cancelled = false;
+    const render = () => {
+      if (cancelled || !widgetEl.current || !window.turnstile || widgetId.current) return;
+      widgetId.current = window.turnstile.render(widgetEl.current, {
+        sitekey: TURNSTILE_SITE_KEY,
+        appearance: "interaction-only",
+        callback: (t: string) => setToken(t),
+        "expired-callback": () => setToken(""),
+        "error-callback": () => setToken(""),
+      });
+    };
+    if (window.turnstile) render();
+    else {
+      const src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+      let s = document.querySelector<HTMLScriptElement>(`script[src="${src}"]`);
+      if (!s) {
+        s = document.createElement("script");
+        s.src = src;
+        s.async = true;
+        document.head.appendChild(s);
+      }
+      s.addEventListener("load", render);
+    }
+    return () => {
+      cancelled = true;
+      if (widgetId.current && window.turnstile) window.turnstile.remove(widgetId.current);
+      widgetId.current = null;
+    };
+  }, [status === "success"]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  function resetSpamCheck() {
+    setToken("");
+    if (widgetId.current && window.turnstile) window.turnstile.reset(widgetId.current);
+  }
 
   // Date limits are computed after mount so server and browser markup always match.
   useEffect(() => {
@@ -89,12 +143,17 @@ export function AppointmentForm() {
       return;
     }
 
+    if (TURNSTILE_SITE_KEY && !token) {
+      setStatus("spam_check");
+      return;
+    }
+
     setStatus("submitting");
     try {
       const res = await fetch("/api/appointments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...input, website: honeypot }),
+        body: JSON.stringify({ ...input, website: honeypot, turnstileToken: token }),
       });
 
       if (res.ok) {
@@ -105,18 +164,21 @@ export function AppointmentForm() {
         return;
       }
 
+      resetSpamCheck(); // tokens are single-use
       const data = (await res.json().catch(() => ({}))) as {
         code?: string;
         errors?: FieldErrors;
       };
       if (res.status === 503 && data.code === "not_configured") setStatus("unavailable");
       else if (res.status === 429) setStatus("rate_limited");
+      else if (res.status === 403 && data.code === "spam_check_failed") setStatus("spam_check");
       else if (res.status === 422 && data.errors) {
         setErrors(data.errors);
         setStatus("idle");
         requestAnimationFrame(() => focusFirstError(data.errors!));
       } else setStatus("error");
     } catch {
+      resetSpamCheck();
       setStatus("error");
     }
   }
@@ -345,6 +407,8 @@ export function AppointmentForm() {
         ) : null}
       </div>
 
+      {TURNSTILE_SITE_KEY ? <div ref={widgetEl} /> : null}
+
       <div>
         <button type="submit" disabled={status === "submitting"} className="btn btn-primary w-full sm:w-auto sm:min-w-64 disabled:opacity-70">
           {status === "submitting" ? "Sending request…" : "Request Appointment"}
@@ -369,6 +433,14 @@ export function AppointmentForm() {
               <p className="mt-1">
                 Your request has <strong>not</strong> been sent. Please use the contact details on
                 this page once they are published, or follow our Instagram page for updates.
+              </p>
+            </>
+          ) : status === "spam_check" ? (
+            <>
+              <p className="font-bold">Please complete the security check.</p>
+              <p className="mt-1">
+                Your request has not been sent. Wait a moment for the check above the button to finish,
+                then press Request Appointment again.
               </p>
             </>
           ) : status === "rate_limited" ? (
