@@ -61,7 +61,7 @@ export const site = {
    */
   contact: {
     phone: null as string | null,
-    email: null as string | null,
+    email: "info@rkmeyecare.com" as string | null,
     whatsapp: null as string | null,
     address: null as string[] | null,
     mapsUrl: null as string | null,
