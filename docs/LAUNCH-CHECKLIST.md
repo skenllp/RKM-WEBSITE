@@ -35,10 +35,11 @@ Status key: [x] done, [ ] still to do.
   - `APPOINTMENT_TO_EMAIL` (clinic inbox; comma-separate several)
   - `APPOINTMENT_FROM_EMAIL` (e.g. `RKM Eye Care <appointments@yourdomain.com>`, on the verified domain)
   - `NEXT_PUBLIC_SITE_URL` (final `https://` domain)
+- [ ] Google Sheet (README "Google Sheet"): deploy the Apps Script, set `GOOGLE_SHEETS_WEBHOOK_URL` and `GOOGLE_SHEETS_WEBHOOK_SECRET`, limit sharing to appointment staff, and send a test request
 - [ ] Redeploy after setting variables (they are read at build/start)
 - [ ] Attach the custom domain, confirm HTTPS
 - [ ] Fill `content/site.ts` (phone, email, whatsapp, address, mapsUrl, hours) and `content/doctor.ts`
-- [ ] Confirm the appointment form and "Book an Appointment" buttons appeared after the redeploy (the site stays in "opening soon" mode until the three email variables are set)
+- [ ] Confirm the appointment form and "Book an Appointment" buttons appeared after the redeploy (the site stays in "opening soon" mode until the three email variables or the two Google Sheet variables are set)
 - [ ] Decide on the eyewear and Apple logos visible in the showroom renders: retouch them or confirm they may be shown
 - [ ] Turn on Vercel Deployment Protection for Preview URLs so unfinished drafts are not public
 - [ ] Add a Vercel Firewall rate-limit rule for `POST /api/appointments`
@@ -65,19 +66,19 @@ The notice at `/privacy` is a plain-language draft, not legal advice. Before lau
 1. The legal entity name acting as the data controller, and a named contact (email/phone) for privacy requests; add a grievance contact if required
 2. That the notice matches Indian data-protection requirements (e.g. the Digital Personal Data Protection Act, 2023 and rules) and any medical-council guidance. Get a lawyer's review
 3. Processors and cross-border transfer: enquiries pass through **Vercel** (hosting; may log IP addresses) and **Resend** (email delivery, US-based). The notice should name them and say data may be processed outside India
-4. A retention period for enquiry emails and who in the clinic can read the inbox
+4. A retention period for enquiry emails and Google Sheet rows, and who in the clinic can read them. If the Sheet is used, Google is also a processor
 5. Wording for parents/guardians booking for a child (the form asks for "patient name" and a phone number)
 6. Consent checkbox wording
 7. The "no tracking cookies" statement stays true only if no analytics/pixels are added
 
 ### Security and spam protection: recommended before the form goes public
-Already in place: server-side validation, honeypot, same-origin + JSON content-type checks, 8 KB body limit, in-memory rate limits (40 attempts / 5 emails per 10 min per IP, per server instance), HTML-escaped email, no personal data in logs, no database, secrets server-only, basic security headers.
+Already in place: server-side validation, honeypot, same-origin + JSON content-type checks, 8 KB body limit, in-memory rate limits (40 attempts / 5 emails per 10 min per IP, per server instance), HTML-escaped email, no personal data in logs, no database (requests go to email and/or the Google Sheet), secrets server-only, basic security headers.
 
 Still recommended:
 1. **CAPTCHA** (Cloudflare Turnstile or hCaptcha): the honeypot and origin check stop only simple bots. Highest-value addition
 2. **Shared rate limiting**: in-memory limits reset on cold starts and are per instance. Use a Vercel Firewall rate-limit rule (or Upstash/Redis) on `/api/appointments`
 3. **Resend hygiene**: sending-only key, single verified domain, rotate if exposed, monitor bounces/complaints, 2FA on the Resend and clinic mail accounts
-4. **Delivery reliability**: there is deliberately no database, so if email delivery fails the enquiry is lost (the visitor is told so and asked to contact the clinic). If guaranteed capture matters, add a queue/inbox store, which also changes the Privacy Notice
+4. **Delivery reliability**: with both email and the Google Sheet configured, either one keeps the enquiry. If every configured delivery fails it is lost (the visitor is told so and asked to contact the clinic)
 5. **Content-Security-Policy** header (not set; needs testing against Next.js inline scripts). HSTS is applied by Vercel on HTTPS
 6. **Alerting**: watch Vercel logs / Resend for repeated `delivery_failed`
 7. Keep dependencies updated (`npm audit` is clean today)

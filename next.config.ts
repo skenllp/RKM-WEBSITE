@@ -17,9 +17,10 @@ const nextConfig: NextConfig = {
     // Only this true/false value reaches the browser, never the settings themselves.
     NEXT_PUBLIC_BOOKING_OPEN: String(
       Boolean(
-        process.env.RESEND_API_KEY &&
+        (process.env.RESEND_API_KEY &&
           process.env.APPOINTMENT_TO_EMAIL &&
-          process.env.APPOINTMENT_FROM_EMAIL,
+          process.env.APPOINTMENT_FROM_EMAIL) ||
+          (process.env.GOOGLE_SHEETS_WEBHOOK_URL && process.env.GOOGLE_SHEETS_WEBHOOK_SECRET),
       ),
     ),
     // Spam check (Cloudflare Turnstile) switches on only when both keys are set.

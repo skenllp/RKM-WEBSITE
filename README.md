@@ -19,9 +19,9 @@ Requires Node 20 or newer.
 4. Set `NEXT_PUBLIC_SITE_URL` to the final domain so canonical links, the sitemap and sharing previews use it.
 
 ## Appointment form: setup (important)
-The form posts to `/api/appointments`, which emails the clinic through [Resend](https://resend.com).
-The visitor is told "request sent" **only after Resend accepts the email**; failures show "Nothing has been sent".
-Until the variables below are set **at build time**, the site runs in "opening soon" mode: buttons say "Get Opening Updates" and the contact page invites visitors to follow on Instagram instead of showing the form. Once they are set and the site is redeployed, the form and "Book an Appointment" buttons appear on their own. (`next.config.ts` passes only a true/false value to the browser, as `NEXT_PUBLIC_BOOKING_OPEN`.) The form never shows a booking confirmation:
+The form posts to `/api/appointments`, which emails the clinic through [Resend](https://resend.com), adds a row to a Google Sheet, or both.
+The visitor is told "request sent" **only after at least one of them accepts it**; if all fail, the form shows "Nothing has been sent". If only one of two fails, the error is logged in Vercel.
+Until email or the Google Sheet is configured **at build time**, the site runs in "opening soon" mode: buttons say "Get Opening Updates" and the contact page invites visitors to follow on Instagram instead of showing the form. Once they are set and the site is redeployed, the form and "Book an Appointment" buttons appear on their own. (`next.config.ts` passes only a true/false value to the browser, as `NEXT_PUBLIC_BOOKING_OPEN`.) The form never shows a booking confirmation:
 the wording is always "request", "not a confirmed booking".
 
 1. **Resend:** create an account, add your domain under *Domains*, add the DNS records (SPF/DKIM) it shows and wait for "Verified". Create an API key under *API Keys* with **Sending access** only, limited to that domain.
@@ -37,11 +37,22 @@ the wording is always "request", "not a confirmed booking".
 3. **Redeploy** so the new variables take effect.
 4. **Locally:** `cp .env.example .env.local`, fill in the values, run `npm run dev`. `.env.local` is git-ignored; never commit keys.
 
+### Google Sheet
+Works alongside email, or on its own without Resend.
+
+1. Create a Google Sheet in the clinic's Google account. In it, open **Extensions > Apps Script**, replace the code with the contents of `docs/google-sheets-apps-script.gs` and save.
+2. In Apps Script, open **Project Settings > Script Properties** and add `SHARED_SECRET` with a long random value (for example from `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`).
+3. **Deploy > New deployment > Web app**, with *Execute as*: **Me** and *Who has access*: **Anyone**. Approve the permissions and copy the URL ending in `/exec`.
+4. Add `GOOGLE_SHEETS_WEBHOOK_URL` (that URL) and `GOOGLE_SHEETS_WEBHOOK_SECRET` (the same secret) in Vercel and in `.env.local`, then redeploy.
+5. Send a test request. An "Appointments" tab is created on the first one.
+
+Share the Sheet only with staff who handle appointments: it holds patient names and phone numbers. After editing the script, publish it with **Deploy > Manage deployments > Edit > New version**, which keeps the same URL.
+
 **Spam check (recommended before going public):** the form supports [Cloudflare Turnstile](https://www.cloudflare.com/products/turnstile/), which is free and usually invisible to real visitors. In Cloudflare, create a Turnstile widget for your domain (mode "Managed"), then add `NEXT_PUBLIC_TURNSTILE_SITE_KEY` (site key) and `TURNSTILE_SECRET_KEY` (secret key, keep it Secret) in Vercel and redeploy. It switches on only when both are set; requests without a valid check are rejected and nothing is emailed.
 
 Key safety: `RESEND_API_KEY`, `APPOINTMENT_TO_EMAIL` and `APPOINTMENT_FROM_EMAIL` are read only inside `app/api/appointments/route.ts` on the server. They have no `NEXT_PUBLIC_` prefix and are not in the browser bundle (verified). Do not add that prefix.
 
-Checks in the endpoint: same-origin only, JSON only, 8 KB limit, server-side validation (name, Indian/international phone, date within 90 days in India time, listed time and reason, consent), honeypot, rate limits, HTML-escaped email. Nothing is stored or logged about the patient; provider errors (status and message only) are logged to Vercel to help diagnose setup problems.
+Checks in the endpoint: same-origin only, JSON only, 8 KB limit, server-side validation (name, Indian/international phone, date within 90 days in India time, listed time and reason, consent), honeypot, rate limits, HTML-escaped email. Patient details are not logged and are stored only in the clinic's email and Google Sheet; provider errors (status and message only) are logged to Vercel to help diagnose setup problems.
 
 See `docs/LAUNCH-CHECKLIST.md` for the full list of what is done, what is needed from the clinic, production steps, launch tests, and recommended security improvements (notably a CAPTCHA) before the form is made public.
 

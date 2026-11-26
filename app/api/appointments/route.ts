@@ -6,17 +6,19 @@ import {
   validateAppointment,
   type AppointmentInput,
 } from "@/lib/appointment";
+import { saveToSheet, sheetConfig } from "@/lib/google-sheet";
 
 /**
  * Appointment enquiry endpoint.
  *
- * Delivery: the request is emailed to the clinic via Resend. A request is only
- * reported as received (HTTP 200) AFTER the email provider has accepted it.
- * If delivery is not configured, the endpoint answers 503 with
+ * Delivery: the request is emailed to the clinic via Resend, added to the
+ * clinic's Google Sheet, or both, depending on which is configured. It is only
+ * reported as received (HTTP 200) AFTER at least one of them has accepted it.
+ * If neither is configured, the endpoint answers 503 with
  * `code: "not_configured"` and the website never shows a success message.
  *
- * Privacy: nothing is stored in a database or written to logs by this code.
- * Personal details exist only in the email sent to the clinic.
+ * Privacy: no personal details are written to logs by this code. They go only
+ * to the clinic's email and Google Sheet.
  */
 
 export const runtime = "nodejs";
@@ -24,8 +26,8 @@ export const dynamic = "force-dynamic";
 
 // Best-effort throttles per server instance (use a Vercel WAF / Firewall rate-limit rule for stricter, shared limits).
 //  - "attempts": every request, generous, stops hammering of the endpoint
-//  - "sends": only requests that pass validation and would send an email, tight, stops email flooding
-// Mistyped forms therefore never use up a visitor's email allowance.
+//  - "sends": only requests that pass validation and would be delivered, tight, stops inbox and sheet flooding
+// Mistyped forms therefore never use up a visitor's sending allowance.
 const WINDOW_MS = 10 * 60 * 1000;
 const MAX_ATTEMPTS = 40;
 const MAX_SENDS = 5;
@@ -102,7 +104,9 @@ export async function POST(request: Request) {
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.APPOINTMENT_TO_EMAIL;
   const from = process.env.APPOINTMENT_FROM_EMAIL;
-  if (!apiKey || !to || !from) return json({ code: "not_configured" }, 503);
+  const email = apiKey && to && from ? { apiKey, to, from } : null;
+  const sheet = sheetConfig();
+  if (!email && !sheet) return json({ code: "not_configured" }, 503);
 
   // On Vercel these headers are set by the platform and cannot be spoofed by the visitor.
   const ip = (
@@ -150,6 +154,23 @@ export async function POST(request: Request) {
   if (overLimit("sends", ip, MAX_SENDS)) return json({ code: "rate_limited" }, 429, { "Retry-After": "600" });
 
   const phone = normalisePhone(input.phone) ?? input.phone;
+  const deliveries: Promise<boolean>[] = [];
+  if (sheet) deliveries.push(saveToSheet(sheet, { ...input, phone }));
+  if (email) deliveries.push(sendEmail(email, input, phone));
+
+  // One successful delivery means the clinic has the request. Asking the visitor to
+  // resend at that point would only create duplicates; the failure is in the logs.
+  if (!(await Promise.all(deliveries)).includes(true)) return json({ code: "delivery_failed" }, 502);
+
+  return json({ ok: true }, 200);
+}
+
+/** True only after Resend accepts the email. */
+async function sendEmail(
+  { apiKey, to, from }: { apiKey: string; to: string; from: string },
+  input: AppointmentInput,
+  phone: string,
+) {
   const lines = [
     "New appointment REQUEST (not a confirmed booking)",
     "",
@@ -199,14 +220,13 @@ export async function POST(request: Request) {
       // or an unverified sender domain is easy to diagnose in the Vercel function logs.
       const detail = await res.text().catch(() => "");
       console.error("[appointments] email provider rejected the request", res.status, detail.slice(0, 300));
-      return json({ code: "delivery_failed" }, 502);
+      return false;
     }
   } catch (err) {
     console.error("[appointments] email delivery failed", err instanceof Error ? err.name : "unknown error");
-    return json({ code: "delivery_failed" }, 502);
+    return false;
   }
-
-  return json({ ok: true }, 200);
+  return true;
 }
 
 export function GET() {

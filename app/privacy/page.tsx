@@ -4,6 +4,7 @@ import { breadcrumbJsonLd } from "@/lib/structured-data";
 import { site } from "@/content/site";
 import { PageHero } from "@/components/Section";
 import { DraftNote } from "@/components/DraftNote";
+import { sheetConfig } from "@/lib/google-sheet";
 
 export const metadata = buildMetadata({
   title: "Privacy Notice",
@@ -12,6 +13,9 @@ export const metadata = buildMetadata({
 });
 
 export default function PrivacyPage() {
+  // Read at build time: the wording follows where requests are actually delivered.
+  const usesSheet = sheetConfig() !== null;
+
   return (
     <>
       <JsonLd data={breadcrumbJsonLd([{ name: "Privacy Notice", path: "/privacy" }])} />
@@ -43,9 +47,10 @@ export default function PrivacyPage() {
             <div>
               <h2>How it is handled</h2>
               <p>
-                The request is sent securely to the clinic’s email through a delivery service. This
-                website does not keep a database of requests and does not add your details to any
-                marketing list. The page is cleared after you send a request.
+                {usesSheet
+                  ? "The request is sent securely to the clinic and saved in a private spreadsheet (Google Sheets) used to follow up on requests. It may also be sent to the clinic’s email through a delivery service. Your details are not added to any marketing list."
+                  : "The request is sent securely to the clinic’s email through a delivery service. This website does not keep a database of requests and does not add your details to any marketing list."}{" "}
+                The page is cleared after you send a request.
               </p>
             </div>
             <div>
