@@ -85,6 +85,7 @@ export function Footer() {
       <div className="border-t border-white/10">
         <div className="container-x flex flex-col items-start gap-2 py-6 pb-24 text-sm text-white/65 md:pb-6">
           <p>© {new Date().getFullYear()} {site.fullName}. All rights reserved.</p>
+          {/* Developer credit, hidden for now. Remove this comment wrapper to show it again.
           <p>
             Developed by{" "}
             <a
@@ -97,6 +98,7 @@ export function Footer() {
               <span className="sr-only"> (opens in a new tab)</span>
             </a>
           </p>
+          */}
         </div>
       </div>
     </footer>
